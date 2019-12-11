@@ -9,7 +9,7 @@ import Table from "./components/Table";
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
-  <Table bordered dark>
+  <Table bordered dark centered>
     <thead>
       <tr>
         <th>Table.is-bordered</th>

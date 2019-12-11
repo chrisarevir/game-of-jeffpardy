@@ -9,12 +9,14 @@ interface TableProps {
 const Table = styled.table<TableProps>`
   background-color: #fff;
   table-layout: fixed;
+
   tbody tr:last-child td,
   tbody tr:last-child th,
   thead:last-child tr:last-child td,
   thead:last-child tr:last-child th {
     border-bottom-width: 0;
   }
+
   tbody tr:last-child td:first-child::after,
   tbody tr:last-child td:last-child::before,
   tbody tr:last-child th:first-child::after,
@@ -25,9 +27,7 @@ const Table = styled.table<TableProps>`
   thead:last-child tr:last-child th:last-child::before {
     display: none;
   }
-  tr {
-    margin-left: -0.25em;
-  }
+
   td,
   th {
     position: relative;
@@ -36,9 +36,16 @@ const Table = styled.table<TableProps>`
     border-color: #212529;
     border-style: solid;
     border-width: 0 0.25em 0.25em 0;
+
     &:last-child {
       border-right-width: 0;
+
+      &::before {
+        top: initial;
+        bottom: -0.25em;
+      }
     }
+
     &::after,
     &::before {
       position: absolute;
@@ -48,94 +55,89 @@ const Table = styled.table<TableProps>`
       content: "";
       background-color: #212529;
     }
+
     &::after {
       bottom: -0.25em;
       left: -0.25em;
     }
+
     &::before {
       top: -0.25em;
       right: -0.25em;
     }
-    &:last-child::before {
-      top: initial;
-      bottom: -0.25em;
-    }
   }
-  ${({ bordered }) => {
-    return (
-      bordered &&
-      css`
-        margin: 4px;
-        border-spacing: 0;
-        border-collapse: separate;
-        border-image-slice: 2;
-        border-image-width: 2;
+
+  th {
+    text-align: ${({ centered }) => (centered ? "center" : "initial")}
+  }
+
+  tr {
+    margin-left: -0.25em;
+  }
+
+  ${({ bordered }) =>
+    bordered &&
+    css`
+      border-collapse: separate;
+      border-image-outset: 2;
+      border-image-repeat: stretch;
+      border-image-slice: 2;
+      border-image-source: url('data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8" ?><svg version="1.1" width="5" height="5" xmlns="http://www.w3.org/2000/svg"><path d="M2 1 h1 v1 h-1 z M1 2 h1 v1 h-1 z M3 2 h1 v1 h-1 z M2 3 h1 v1 h-1 z" fill="rgb(33,37,41)" /></svg>');
+      border-image-width: 2;
+      border-spacing: 0;
+      border-style: solid;
+      border-width: 4px;
+      margin: 4px;
+
+      @media all and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: 0.001dpcm) {
+        border-image-repeat: space;
+      }
+
+      @supports (-moz-appearance: meterbar) {
         border-image-repeat: stretch;
-        border-image-source: url('data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8" ?><svg version="1.1" width="5" height="5" xmlns="http://www.w3.org/2000/svg"><path d="M2 1 h1 v1 h-1 z M1 2 h1 v1 h-1 z M3 2 h1 v1 h-1 z M2 3 h1 v1 h-1 z" fill="rgb(33,37,41)" /></svg>');
-        border-image-outset: 2;
-        @media all and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: 0.001dpcm) {
-          border-image-repeat: space;
+      }
+    `}
+
+  ${({ dark }) =>
+    dark &&
+    css`
+      color: #fff;
+      background-color: #212529;
+
+      &::before {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        content: "";
+      }
+
+      td,
+      th {
+        border-color: #fff;
+        &::before,
+        &::after {
+          display: none;
         }
-        @supports (-moz-appearance: meterbar) {
-          border-image-repeat: stretch;
-        }
-      `
-    );
-  }};
-  ${({ centered }) => {
-    return (
-      centered &&
-      css`
-        th {
-          text-align: center;
-        }
-      `
-    );
-  }}
-  ${({ dark }) => {
-    return (
-      dark &&
-      css`
-        color: #fff;
-        background-color: #212529;
-        &::before {
-          position: absolute;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          left: 0;
-          content: "";
-        }
-        td,
-        th {
-          border-color: #fff;
-          &::before,
-          &::after {
-            display: none;
-          }
-        }
-      `
-    );
-  }};
-  ${({ bordered, dark }) => {
-    return (
-      bordered &&
-      dark &&
-      css`
-        border-image-slice: 2;
-        border-image-width: 2;
+      }
+    `}
+
+  ${({ bordered, dark }) =>
+    bordered &&
+    dark &&
+    css`
+      border-image-outset: 0;
+      border-image-source: url('data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8" ?><svg version="1.1" width="5" height="5" xmlns="http://www.w3.org/2000/svg"><path d="M2 1 h1 v1 h-1 z M1 2 h1 v1 h-1 z M3 2 h1 v1 h-1 z M2 3 h1 v1 h-1 z" fill="rgb(255,255,255)" /></svg>');
+
+      @media all and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: 0.001dpcm) {
+        border-image-repeat: space;
+      }
+
+      @supports (-moz-appearance: meterbar) {
         border-image-repeat: stretch;
-        border-image-source: url('data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8" ?><svg version="1.1" width="5" height="5" xmlns="http://www.w3.org/2000/svg"><path d="M2 1 h1 v1 h-1 z M1 2 h1 v1 h-1 z M3 2 h1 v1 h-1 z M2 3 h1 v1 h-1 z" fill="rgb(255,255,255)" /></svg>');
-        border-image-outset: 0;
-        @media all and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: 0.001dpcm) {
-          border-image-repeat: space;
-        }
-        @supports (-moz-appearance: meterbar) {
-          border-image-repeat: stretch;
-        }
-      `
-    );
-  }};
+      }
+    `}
 `;
 
 export default Table;

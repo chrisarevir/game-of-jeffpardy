@@ -8,8 +8,6 @@
 .nes-progress,
 .nes-progress.is-rounded,
 .nes-select select,
-.nes-table.is-bordered,
-.nes-table.is-dark.is-bordered,
 .nes-textarea {
   border-style: solid;
   border-width: 4px;
