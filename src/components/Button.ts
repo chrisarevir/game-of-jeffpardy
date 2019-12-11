@@ -7,41 +7,6 @@ interface ButtonProps {
   variant?: ButtonVariant;
 }
 
-function getVariantStyles(variant?: ButtonVariant) {
-  return css`
-    color: #fff;
-    background-color: #209cee;
-
-    &::after {
-      position: absolute;
-      top: -4px;
-      right: -4px;
-      bottom: -4px;
-      left: -4px;
-      content: "";
-      box-shadow: inset -4px -4px #006bb3;
-    }
-
-    &:hover {
-      color: #fff;
-      text-decoration: none;
-      background-color: #108de0;
-    }
-
-    &:hover::after {
-      box-shadow: inset -6px -6px #006bb3;
-    }
-
-    &:focus {
-      box-shadow: 0 0 0 6px rgba(0, 107, 179, 0.3);
-    }
-
-    &:active:not(.is-disabled)::after {
-      box-shadow: inset 4px 4px #006bb3;
-    }
-  `;
-}
-
 const Button = styled.button<ButtonProps>`
   background-color: #fff;
   border-image-outset: 2;
