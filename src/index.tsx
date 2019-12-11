@@ -13,7 +13,7 @@ const ToView = () => (
     <Button variant="success">success</Button>
     <Button variant="warning">warning</Button>
     <Button variant="error">error</Button>
-    <Button variant="disabled">disabled</Button>
+    <Button disabled>disabled</Button>
   </>
 );
 
