@@ -4,13 +4,12 @@ import ReactDOM from "react-dom";
 import "./styles/reset.css";
 import "./styles/base.css";
 
-import App from "./pages/App";
+// import App from "./pages/App";
+import Avatar from "./components/Avatar";
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
-  <p className="nes-balloon from-left nes-pointer">
-    This is not a clickable element, but it's an area of the pointer.
-  </p>,
+  <Avatar src="https://www.gravatar.com/avatar?s=15" rounded />,
   document.getElementById("root")
 );
 
