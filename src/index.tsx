@@ -3,16 +3,17 @@ import ReactDOM from "react-dom";
 import "./styles/reset.css";
 import "./styles/base.css";
 
-import Text from "./components/Text";
+import Button from "./components/Button";
 import * as serviceWorker from "./serviceWorker";
 
 const ToView = () => (
   <>
-    <Text variant="primary">primary</Text>
-    <Text variant="success">success</Text>
-    <Text variant="warning">warning</Text>
-    <Text variant="error">error</Text>
-    <Text variant="disabled">disabled</Text>
+    <Button>normal</Button>
+    <Button variant="primary">primary</Button>
+    <Button variant="success">success</Button>
+    <Button variant="warning">warning</Button>
+    <Button variant="error">error</Button>
+    <Button variant="disabled">disabled</Button>
   </>
 );
 
