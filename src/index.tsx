@@ -3,18 +3,21 @@ import ReactDOM from "react-dom";
 import "./styles/reset.css";
 import "./styles/base.css";
 
-import Button from "./components/Button";
+import Radio from "./components/Radio";
+import Text from "./components/Text";
 import * as serviceWorker from "./serviceWorker";
 
 const ToView = () => (
-  <>
-    <Button>normal</Button>
-    <Button variant="primary">primary</Button>
-    <Button variant="success">success</Button>
-    <Button variant="warning">warning</Button>
-    <Button variant="error">error</Button>
-    <Button disabled>disabled</Button>
-  </>
+  <div>
+    <label>
+      <Radio autoFocus name="test" />
+      <Text>Yes</Text>
+    </label>
+    <label>
+      <Radio name="test" />
+      <Text>No</Text>
+    </label>
+  </div>
 );
 
 ReactDOM.render(<ToView />, document.getElementById("root"));
