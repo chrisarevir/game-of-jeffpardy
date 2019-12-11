@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const FontColor = {
-  primary: "#209cee",
+  primary: "#f5af6c",
   success: "#92cc41",
   warning: "#f7d51d",
   error: "#e76e55",

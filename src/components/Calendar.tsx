@@ -1,41 +1,40 @@
 import React from "react";
-import styled from "styled-components";
-import { getWeeksInMonth } from "date-fns";
+// import styled from "styled-components";
 
 import Table from "../components/Table";
+import Text from "../components/Text";
+import { getMonth } from "../utils/utils";
 
 interface CalendarProps {
-  currentDate?: Date;
+  selectedDate?: Date;
 }
 
 const Calendar = () => {
   const selectedDate = new Date();
-  const weeksInMonth = getWeeksInMonth(selectedDate);
-  console.log({ weeksInMonth });
+
+  const categoryCell = (
+    <td>
+      <Text variant="primary">Category</Text>
+    </td>
+  );
+
+  const month = getMonth(categoryCell, selectedDate);
+
   return (
     <Table bordered dark centered>
       <thead>
         <tr>
+          <th></th>
+          <th>Sunday</th>
           <th>Monday</th>
           <th>Tuesday</th>
           <th>Wednesday</th>
           <th>Thursday</th>
+          <th>Friday</th>
+          <th>Saturday</th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <td>100</td>
-          <td>100</td>
-          <td>100</td>
-          <td>100</td>
-        </tr>
-        <tr>
-          <td>200</td>
-          <td>200</td>
-          <td>200</td>
-          <td>200</td>
-        </tr>
-      </tbody>
+      <tbody>{month.map(week => week)}</tbody>
     </Table>
   );
 };
