@@ -13,13 +13,13 @@ const Dimensions = {
   lg: 64
 } as const;
 
-const getDimensions = (size?: Size) => {
+function getDimensions(size?: Size) {
   if (size) {
     return Dimensions[size];
   }
 
   return 32;
-};
+}
 
 const Avatar = styled.img<AvatarProps>`
   border-radius: ${({ rounded = false }) => (rounded ? `50px` : "initial")};
