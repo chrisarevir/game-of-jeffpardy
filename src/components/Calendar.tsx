@@ -1,10 +1,13 @@
 import React from "react";
-// import styled from "styled-components";
-
 import Dialog from "../components/Dialog";
 import Table from "../components/Table";
 import Text from "../components/Text";
-import { getMonth } from "../utils/utils";
+import {
+  getDay,
+  getDaysInMonth,
+  getWeeksInMonth,
+  startOfMonth
+} from "date-fns";
 
 interface CalendarProps {
   selectedDate?: Date;
@@ -12,6 +15,67 @@ interface CalendarProps {
 
 const Calendar = () => {
   const [visible, setVisible] = React.useState(false);
+  // const []
+
+  const onClickClue = () => {
+    setVisible(true);
+  };
+
+  /* Returns the point value for the date */
+  const getDayValue = (date: any) => "100";
+
+  /* Returns an array of cells for each day of the week */
+  const getDayCells = (week: number, monthDays: any, setVisible: any) => {
+    const dayCells = [];
+    // const dayValue(date) = getDayValue();
+
+    const daysLeft = monthDays.slice(7 * week);
+
+    for (var day = 0; day < 7; day++) {
+      dayCells.push(
+        <td key={`${week}-${day}`} onClick={() => onClickClue()}>
+          {daysLeft[day]}
+        </td>
+      );
+    }
+
+    return dayCells;
+  };
+
+  /* Returns an array of each day of the month with zeroes
+preceding based on the first weekday of the month */
+  const getDays = (selectedDate: Date) => {
+    const numberOfDaysInMonth = getDaysInMonth(selectedDate);
+    const startDate = startOfMonth(selectedDate);
+    const dayOfWeek = getDay(startDate);
+    const offset = 0 + dayOfWeek;
+
+    const days = [];
+
+    for (var i = 0; i < numberOfDaysInMonth + offset; i++) {
+      if (i < offset) {
+        days.push("");
+      } else {
+        days.push(i - offset + 1);
+      }
+    }
+
+    return days;
+  };
+
+  /* Returns an array of rows for each week in the month */
+  const getMonth = (selectedDate: Date, setVisible: any) => {
+    const weeksInMonth = getWeeksInMonth(selectedDate);
+    const days = getDays(selectedDate);
+    const month = [];
+
+    for (var week = 0; week < weeksInMonth; week++) {
+      const dayCells = getDayCells(week, days, setVisible);
+      month.push(<tr>{dayCells.map(day => day)}</tr>);
+    }
+
+    return month;
+  };
 
   const selectedDate = new Date();
   const month = getMonth(selectedDate, setVisible);
