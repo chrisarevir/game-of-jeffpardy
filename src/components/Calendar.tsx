@@ -190,7 +190,9 @@ const Calendar: React.FC<CalendarProps> = ({
               </div>
             )}
             <div style={{ margin: "auto", paddingTop: "1rem" }}>
-              {correct && <Text variant="success">Correct!</Text>}
+              {(correct || (hasRecord && answeredCorrectly)) && (
+                <Text variant="success">Correct!</Text>
+              )}
               {incorrect && <Text variant="error">Incorrect :(</Text>}
             </div>
             {hasRecord && (
