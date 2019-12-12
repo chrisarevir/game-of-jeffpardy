@@ -113,7 +113,7 @@ const Calendar: React.FC<CalendarProps> = ({
   const [modalVisibility, setModalVisibility] = React.useState(false);
   const [clueAndResponse, setClueAndResponse] = React.useState({
     clue: { category: "", text: "", value: 0 },
-    response: {}
+    response: ""
   });
 
   const [correct, setCorrect] = React.useState(false);
@@ -127,7 +127,6 @@ const Calendar: React.FC<CalendarProps> = ({
     setModalVisibility(true);
     setHasRecord(hasDailyRecord);
 
-    debugger;
     const offset = parseInt(e.currentTarget.innerHTML, 10) - 1;
     const lookupKey = format(
       addDays(startOfMonth(viewDate), offset),
@@ -146,9 +145,9 @@ const Calendar: React.FC<CalendarProps> = ({
       "response_input"
     ) as HTMLInputElement;
 
-    const responseValue = responseInput.value;
+    const responseValue = responseInput.value.toLowerCase();
     const pointValue = clueAndResponse.clue.value;
-    const correctResponse = clueAndResponse.response;
+    const correctResponse = clueAndResponse.response.toLowerCase();
 
     if (responseValue === correctResponse) {
       record[lookupDate] = pointValue;
