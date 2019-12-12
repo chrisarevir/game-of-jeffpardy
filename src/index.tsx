@@ -3,19 +3,23 @@ import ReactDOM from "react-dom";
 import "./styles/reset.css";
 import "./styles/base.css";
 
+import Radio from "./components/Radio";
 import Text from "./components/Text";
 import Calendar from "./components/Calendar";
 import * as serviceWorker from "./serviceWorker";
 
 const ToView = () => (
-  <>
+  <div>
     <Calendar />
-    <Text variant="primary">primary</Text>
-    <Text variant="success">success</Text>
-    <Text variant="warning">warning</Text>
-    <Text variant="error">error</Text>
-    <Text variant="disabled">disabled</Text>
-  </>
+    <label>
+      <Radio autoFocus name="test" />
+      <Text>Yes</Text>
+    </label>
+    <label>
+      <Radio name="test" />
+      <Text>No</Text>
+    </label>
+  </div>
 );
 
 ReactDOM.render(<ToView />, document.getElementById("root"));

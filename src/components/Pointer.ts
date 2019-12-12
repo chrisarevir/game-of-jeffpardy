@@ -6,4 +6,6 @@ const Pointer = styled.p`
     pointer;
 `;
 
+Pointer.displayName = "NES Pointer";
+
 export default Pointer;

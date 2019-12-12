@@ -141,4 +141,6 @@ const Table = styled.table<TableProps>`
     `}
 `;
 
+Table.displayName = "NES Table";
+
 export default Table;

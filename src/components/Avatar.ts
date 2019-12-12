@@ -28,4 +28,6 @@ const Avatar = styled.img<AvatarProps>`
   width: ${({ size }) => getDimensions(size)}px;
 `;
 
+Avatar.displayName = "NES Avatar";
+
 export default Avatar;

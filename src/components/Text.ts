@@ -26,4 +26,6 @@ const Text = styled.span<TextProps>`
   color: ${({ variant }) => getFontColor(variant)};
 `;
 
+Text.displayName = "NES Text";
+
 export default Text;
