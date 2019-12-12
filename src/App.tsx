@@ -1,6 +1,5 @@
 import React from "react";
 import { Layout, Menu } from "antd";
-import Icon from "./components/Icon";
 import { HashRouter as Router, Link, Route } from "react-router-dom";
 
 import "./styles/reset.css";
