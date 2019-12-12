@@ -1,5 +1,6 @@
 import React from "react";
 import { Layout, Menu } from "antd";
+import Icon from "./components/Icon";
 import { HashRouter as Router, Link, Route } from "react-router-dom";
 
 import "./styles/reset.css";
@@ -31,7 +32,11 @@ const App: React.FC = () => {
           <Layout.Content style={{ padding: "24px" }}>
             <Route
               component={() => {
-                return <div>Login and whatnot?</div>;
+                return (
+                  <div>
+                    <Icon icon="coin" size="lg" />
+                  </div>
+                );
               }}
               exact
               path="/"
