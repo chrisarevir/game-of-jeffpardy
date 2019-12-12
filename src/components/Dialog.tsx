@@ -10,10 +10,9 @@ const Dialog = styled.section<DialogProps>`
   background: #fff;
   border-style: solid;
   border-width: 4px;
-  margin: 20% 35%;
+  margin: 20% 35% auto;
   padding: 1.5rem 2rem;
   position: absolute;
-  width: 30%;
   z-index: 2;
 
   ${({ rounded }) =>

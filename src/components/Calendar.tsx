@@ -8,6 +8,7 @@ import {
   getWeeksInMonth,
   startOfMonth
 } from "date-fns";
+import getClueAndReponse from "../utils/getClueAndReponse";
 
 interface CalendarProps {
   selectedDate?: Date;
@@ -90,7 +91,7 @@ preceding based on the first weekday of the month */
     <>
       {visible && (
         <Dialog onClickOutside={() => setVisible(false)} rounded>
-          This is the contents
+          {JSON.stringify(getClueAndReponse("2019-12-11"))}
         </Dialog>
       )}
       <Table bordered dark centered>
