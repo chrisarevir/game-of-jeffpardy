@@ -15,10 +15,11 @@ interface CalendarProps {
 
 const Calendar = () => {
   const [visible, setVisible] = React.useState(false);
-  // const []
+  const [selectedDate, setSelectedDate] = React.useState(new Date());
 
-  const onClickClue = () => {
+  const onClickClue = (day: number) => {
     setVisible(true);
+    // get day data
   };
 
   /* Returns the point value for the date */
@@ -33,7 +34,7 @@ const Calendar = () => {
 
     for (var day = 0; day < 7; day++) {
       dayCells.push(
-        <td key={`${week}-${day}`} onClick={() => onClickClue()}>
+        <td key={`${week}-${day}`} onClick={() => onClickClue(daysLeft[day])}>
           {daysLeft[day]}
         </td>
       );
@@ -77,7 +78,6 @@ preceding based on the first weekday of the month */
     return month;
   };
 
-  const selectedDate = new Date();
   const month = getMonth(selectedDate, setVisible);
 
   const getDayOfWeek = (dayOfWeek: string) => (

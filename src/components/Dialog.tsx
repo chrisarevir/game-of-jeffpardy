@@ -4,6 +4,7 @@ import Button from "./Button";
 
 interface DialogProps {
   rounded?: boolean;
+  selectedDate?: Date;
 }
 
 const Dialog = styled.section<DialogProps>`
