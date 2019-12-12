@@ -5,10 +5,12 @@ import "./styles/base.css";
 
 import Radio from "./components/Radio";
 import Text from "./components/Text";
+import Calendar from "./components/Calendar";
 import * as serviceWorker from "./serviceWorker";
 
 const ToView = () => (
   <div>
+    <Calendar />
     <label>
       <Radio autoFocus name="test" />
       <Text>Yes</Text>

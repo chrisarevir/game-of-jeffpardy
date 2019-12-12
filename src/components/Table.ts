@@ -36,6 +36,7 @@ const Table = styled.table<TableProps>`
     border-color: #212529;
     border-style: solid;
     border-width: 0 0.25em 0.25em 0;
+    text-align: center;
 
     &:last-child {
       border-right-width: 0;
@@ -101,8 +102,8 @@ const Table = styled.table<TableProps>`
   ${({ dark }) =>
     dark &&
     css`
-      color: #fff;
-      background-color: #212529;
+      color: #f5af6c;
+      background-color: #050ac5;
 
       &::before {
         position: absolute;
