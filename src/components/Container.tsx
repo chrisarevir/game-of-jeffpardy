@@ -48,7 +48,7 @@ const ContainerContainer = styled.div<ContainerProps>`
         padding: 0 0.5rem;
         margin: -1.8rem 0 1rem;
         font-size: 1rem;
-        background-color: #f0f2f5;
+        background-color: #fff;
 
         ${rounded &&
           css`

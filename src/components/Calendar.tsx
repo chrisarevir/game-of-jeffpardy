@@ -17,6 +17,7 @@ import Input from "../components/Input";
 import Table from "../components/Table";
 import Text from "../components/Text";
 import Icon from "../components/Icon";
+import Container from "../components/Container";
 
 export const getDayOfWeekLabel = (day: number) => {
   return format(addDays(startOfWeek(new Date()), day), "EEEEEE");
@@ -176,35 +177,37 @@ const Calendar: React.FC<CalendarProps> = ({
     <>
       {modalVisibility && (
         <Dialog onClickOutside={() => onClickShim()} rounded>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column"
-            }}
-          >
-            {clueAndResponse.clue.text}
-            {!hasRecord && (
-              <div style={{ display: "flex", padding: "3rem 1.5rem 0.5rem" }}>
-                <Input id="response_input" />
-                <Button onClick={onSubmitResponse} variant="primary">
-                  Submit
-                </Button>
-              </div>
-            )}
-            <div style={{ margin: "auto", paddingTop: "1rem" }}>
-              {(correct || (hasRecord && answeredCorrectly)) && (
-                <Text variant="success">Correct!</Text>
+          <Container title={clueAndResponse.clue.value.toString()}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column"
+              }}
+            >
+              {clueAndResponse.clue.text}
+              {!hasRecord && (
+                <div style={{ display: "flex", padding: "3rem 1.5rem 0.5rem" }}>
+                  <Input id="response_input" />
+                  <Button onClick={onSubmitResponse} variant="primary">
+                    Submit
+                  </Button>
+                </div>
               )}
-              {incorrect && <Text variant="error">Incorrect :(</Text>}
-            </div>
-            {hasRecord && (
               <div style={{ margin: "auto", paddingTop: "1rem" }}>
-                <Text variant={answeredCorrectly ? "success" : "error"}>
-                  {clueAndResponse.response}
-                </Text>
+                {(correct || (hasRecord && answeredCorrectly)) && (
+                  <Text variant="success">Correct!</Text>
+                )}
+                {incorrect && <Text variant="error">Incorrect :(</Text>}
               </div>
-            )}
-          </div>
+              {hasRecord && (
+                <div style={{ margin: "auto", paddingTop: "1rem" }}>
+                  <Text variant={answeredCorrectly ? "success" : "error"}>
+                    {clueAndResponse.response}
+                  </Text>
+                </div>
+              )}
+            </div>
+          </Container>
         </Dialog>
       )}
       <Table bordered dark centered style={{ width: "100%" }}>
