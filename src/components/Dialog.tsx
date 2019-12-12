@@ -48,8 +48,10 @@ const Dialog = styled.section<DialogProps>`
 const Shim = styled.div`
   background: black;
   height: 100vh;
+  left: 0;
   opacity: 0.5;
   position: absolute;
+  top: 0;
   width: 100vw;
   z-index: 1;
 `;

@@ -105,15 +105,6 @@ const Table = styled.table<TableProps>`
       color: #f5af6c;
       background-color: #050ac5;
 
-      &::before {
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        content: "";
-      }
-
       td,
       th {
         border-color: #fff;
