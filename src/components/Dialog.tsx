@@ -11,7 +11,11 @@ const Dialog = styled.section<DialogProps>`
   background: #fff;
   border-style: solid;
   border-width: 4px;
-  margin: 20% 35% auto;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 20vh;
+  max-height: 80vh;
+  max-width: 80vw;
   padding: 1.5rem 2rem;
   position: absolute;
   z-index: 2;
