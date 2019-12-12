@@ -57,7 +57,6 @@ interface RecordsProps {
 }
 
 const Records: React.FC<RecordsProps> = ({ record }) => {
-  console.log({ record });
   const records = fakeRecords.concat([
     {
       name: "You",

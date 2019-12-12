@@ -15,7 +15,6 @@ const App: React.FC = () => {
   const record = JSON.parse(localStorage.getItem("playerRecord") || "{}");
 
   if (!record.modified) {
-    console.log("setting new");
     localStorage.setItem("playerRecord", JSON.stringify(defaultRecord));
   }
 
