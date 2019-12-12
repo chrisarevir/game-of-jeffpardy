@@ -5,7 +5,7 @@ const responses = {
   "2019-12-04": "That 70s Show",
   "2019-12-05": "Carol Brady",
   "2019-12-06": "The Goldbergs",
-  "2019-12-07": "Oak Ridges",
+  "2019-12-07": "Oak Ridge",
   "2019-12-08": "Tolkien",
   "2019-12-09": "Chiefs",
   "2019-12-10": "Grateful Dead",

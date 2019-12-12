@@ -16,6 +16,7 @@ import getClueAndResponse from "../utils/getClueAndResponse";
 import Input from "../components/Input";
 import Table from "../components/Table";
 import Text from "../components/Text";
+import Icon from "../components/Icon";
 
 export const getDayOfWeekLabel = (day: number) => {
   return format(addDays(startOfWeek(new Date()), day), "EEEEEE");
@@ -189,7 +190,9 @@ const Calendar: React.FC<CalendarProps> = ({
               </div>
             )}
             <div style={{ margin: "auto", paddingTop: "1rem" }}>
-              {correct && <Text variant="success">Correct!</Text>}
+              {(correct || (hasRecord && answeredCorrectly)) && (
+                <Text variant="success">Correct!</Text>
+              )}
               {incorrect && <Text variant="error">Incorrect :(</Text>}
             </div>
             {hasRecord && (
@@ -210,6 +213,9 @@ const Calendar: React.FC<CalendarProps> = ({
           record={record}
         />
       </Table>
+      <div style={{ paddingTop: "1rem" }}>
+        Monthly total: <Icon icon="coin" /> {record.totalScore}
+      </div>
     </>
   );
 };
