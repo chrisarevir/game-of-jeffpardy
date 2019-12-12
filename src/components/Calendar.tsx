@@ -11,7 +11,7 @@ import { range, splitEvery } from "ramda";
 import React from "react";
 
 import Dialog from "../components/Dialog";
-import getClueAndReponse from "../utils/getClueAndReponse";
+import getClueAndResponse from "../utils/getClueAndResponse";
 import Table from "../components/Table";
 import Text from "../components/Text";
 
@@ -89,6 +89,7 @@ interface CalendarProps {
 const Calendar: React.FC<CalendarProps> = ({ selectedDate = new Date() }) => {
   const [modalVisibility, setModalVisibility] = React.useState(false);
   const viewDate = selectedDate;
+  const [lookupDate, setLookupDate] = React.useState("");
   // const [viewDate, setViewDate] = React.useState(selectedDate);
 
   const onDayClick = (e: React.MouseEvent) => {
@@ -100,14 +101,14 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate = new Date() }) => {
       "yyyy-MM-dd"
     );
 
-    console.log({ lookupKey });
+    setLookupDate(lookupKey);
   };
 
   return (
     <>
       {modalVisibility && (
         <Dialog onClickOutside={() => setModalVisibility(false)} rounded>
-          {JSON.stringify(getClueAndReponse("2019-12-11"))}
+          {getClueAndResponse(lookupDate).clue.text}
         </Dialog>
       )}
       <Table bordered dark centered style={{ width: "100%" }}>
