@@ -10,8 +10,10 @@ import {
 import { range, splitEvery } from "ramda";
 import React from "react";
 
+import Button from "../components/Button";
 import Dialog from "../components/Dialog";
 import getClueAndResponse from "../utils/getClueAndResponse";
+import Input from "../components/Input";
 import Table from "../components/Table";
 import Text from "../components/Text";
 
@@ -108,7 +110,18 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate = new Date() }) => {
     <>
       {modalVisibility && (
         <Dialog onClickOutside={() => setModalVisibility(false)} rounded>
-          {getClueAndResponse(lookupDate).clue.text}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column"
+            }}
+          >
+            {getClueAndResponse(lookupDate).clue.text}
+            <div style={{ display: "flex", padding: "3rem 1.5rem 0.5rem" }}>
+              <Input />
+              <Button variant="primary">Submit</Button>
+            </div>
+          </div>
         </Dialog>
       )}
       <Table bordered dark centered style={{ width: "100%" }}>

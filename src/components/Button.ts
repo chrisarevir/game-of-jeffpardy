@@ -27,6 +27,7 @@ const Button = styled.button<ButtonProps>`
   text-align: center;
   user-select: none;
   vertical-align: middle;
+  max-height: 48px;
 
   @media all and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: 0.001dpcm) {
     border-image-repeat: space;
