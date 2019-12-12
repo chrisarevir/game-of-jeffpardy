@@ -62,7 +62,7 @@ const App: React.FC = () => {
             />
             <Route
               component={() => {
-                return <Records />;
+                return <Records record={record} />;
               }}
               exact
               path="/records"

@@ -19,7 +19,52 @@ const Column = styled.div`
   width: 100%;
 `;
 
-const Records: React.FC = () => {
+const fakeRecords = [
+  { name: "Christian Rivera", totalScore: 100000 },
+  { name: "Ben Burlingham", totalScore: 90000 },
+  { name: "Amanda Bosson", totalScore: 80000 },
+  { name: "Matt Baum", totalScore: 70000 }
+];
+
+type RecordShape = { name: string; totalScore: number };
+
+const scoreSorter = (a: RecordShape, b: RecordShape) =>
+  b.totalScore - a.totalScore;
+
+const ScoreBody: React.FC<{ records: RecordShape[] }> = ({ records }) => {
+  const ordered = records.sort(scoreSorter);
+
+  return (
+    <tbody>
+      {ordered.map((record, index) => {
+        return (
+          <tr>
+            <td>{`${index + 1}`}.</td>
+            <td>{record.name}</td>
+            <td>
+              <Icon icon="coin" />
+              <Text style={{ marginLeft: "4px" }}>{record.totalScore}</Text>
+            </td>
+          </tr>
+        );
+      })}
+    </tbody>
+  );
+};
+
+interface RecordsProps {
+  record?: any;
+}
+
+const Records: React.FC<RecordsProps> = ({ record }) => {
+  console.log({ record });
+  const records = fakeRecords.concat([
+    {
+      name: "You",
+      totalScore: record.totalScore
+    }
+  ]);
+
   return (
     <>
       <Container title="Personal">
@@ -33,10 +78,12 @@ const Records: React.FC = () => {
 
           <Row style={{ marginTop: "24px" }}>
             Your Score:
-            <Text>
-              <Icon icon="coin" />
-              <Text style={{ marginLeft: "4px" }}>100,000,000</Text>
-            </Text>
+            {record && (
+              <Text>
+                <Icon icon="coin" />
+                <Text style={{ marginLeft: "4px" }}>{record.totalScore}</Text>
+              </Text>
+            )}
           </Row>
         </Column>
       </Container>
@@ -50,40 +97,7 @@ const Records: React.FC = () => {
               <th>Score</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>1.</td>
-              <td>Christian Rivera</td>
-              <td>
-                <Icon icon="coin" />
-                <Text style={{ marginLeft: "4px" }}>100,000,000,000</Text>
-              </td>
-            </tr>
-            <tr>
-              <td>2.</td>
-              <td>Ben Burlingham</td>
-              <td>
-                <Icon icon="coin" />
-                <Text style={{ marginLeft: "4px" }}>90,000,000,000</Text>
-              </td>
-            </tr>
-            <tr>
-              <td>3.</td>
-              <td>Amanda Bosson</td>
-              <td>
-                <Icon icon="coin" />
-                <Text style={{ marginLeft: "4px" }}>80,000,000,000</Text>
-              </td>
-            </tr>
-            <tr>
-              <td>4.</td>
-              <td>Matt Baum</td>
-              <td>
-                <Icon icon="coin" />
-                <Text style={{ marginLeft: "4px" }}>70,000,000,000</Text>
-              </td>
-            </tr>
-          </tbody>
+          <ScoreBody records={records} />
         </Table>
       </Container>
     </>
