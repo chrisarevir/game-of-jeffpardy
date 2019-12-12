@@ -4,9 +4,17 @@ import "./styles/reset.css";
 import "./styles/base.css";
 
 import Calendar from "./components/Calendar";
+import { defaultRecord } from "./utils/constants";
 import * as serviceWorker from "./serviceWorker";
 
 const ToView = () => <Calendar />;
+
+const record = JSON.parse(localStorage.getItem("playerRecord") || "{}");
+
+if (!record.modified) {
+  console.log("setting new");
+  localStorage.setItem("playerRecord", JSON.stringify(defaultRecord));
+}
 
 ReactDOM.render(<ToView />, document.getElementById("root"));
 

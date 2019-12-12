@@ -90,9 +90,16 @@ interface CalendarProps {
 
 const Calendar: React.FC<CalendarProps> = ({ selectedDate = new Date() }) => {
   const [modalVisibility, setModalVisibility] = React.useState(false);
-  const viewDate = selectedDate;
+  const [clueAndResponse, setClueAndResponse] = React.useState({
+    clue: { category: "", text: "", value: 0 },
+    response: {}
+  });
+  const [correct, setCorrect] = React.useState(false);
+  const [incorrect, setIncorrect] = React.useState(false);
   const [lookupDate, setLookupDate] = React.useState("");
   // const [viewDate, setViewDate] = React.useState(selectedDate);
+
+  const viewDate = selectedDate;
 
   const onDayClick = (e: React.MouseEvent) => {
     setModalVisibility(true);
@@ -104,22 +111,65 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate = new Date() }) => {
     );
 
     setLookupDate(lookupKey);
+    setClueAndResponse(getClueAndResponse(lookupKey));
+  };
+
+  const onSubmitResponse = () => {
+    setCorrect(false);
+    setIncorrect(false);
+
+    const responseInput = document.getElementById(
+      "response_input"
+    ) as HTMLInputElement;
+
+    const responseValue = responseInput.value;
+    const pointValue = clueAndResponse.clue.value;
+    const correctResponse = clueAndResponse.response;
+
+    const playerRecord = JSON.parse(
+      localStorage.getItem("playerRecord") || "{}"
+    );
+
+    if (responseValue === correctResponse) {
+      playerRecord[lookupDate] = pointValue;
+      playerRecord.totalScore += pointValue;
+      setCorrect(true);
+    } else {
+      playerRecord[lookupDate] = 0;
+      setIncorrect(true);
+    }
+
+    playerRecord.modified = true;
+    localStorage.setItem("playerRecord", JSON.stringify(playerRecord));
+    setTimeout(() => setModalVisibility(false), 3000);
+  };
+
+  const onClickShim = () => {
+    setModalVisibility(false);
+    setCorrect(false);
+    setIncorrect(false);
   };
 
   return (
     <>
       {modalVisibility && (
-        <Dialog onClickOutside={() => setModalVisibility(false)} rounded>
+        <Dialog onClickOutside={() => onClickShim()} rounded>
           <div
             style={{
               display: "flex",
               flexDirection: "column"
             }}
           >
-            {getClueAndResponse(lookupDate).clue.text}
+            {clueAndResponse.clue.text}
             <div style={{ display: "flex", padding: "3rem 1.5rem 0.5rem" }}>
-              <Input />
-              <Button variant="primary">Submit</Button>
+              <Input id="response_input" />
+              <Button onClick={onSubmitResponse} variant="primary">
+                Submit
+              </Button>
+            </div>
+            <div style={{ margin: "auto", paddingTop: "1rem" }}>
+              {correct && <Text variant="success">Correct!</Text>}
+              {incorrect && <Text variant="error">Incorrect :(</Text>}
             </div>
           </div>
         </Dialog>
