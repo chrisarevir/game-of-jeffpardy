@@ -50,7 +50,7 @@ const Shim = styled.div`
   height: 100vh;
   left: 0;
   opacity: 0.5;
-  position: absolute;
+  position: fixed;
   top: 0;
   width: 100vw;
   z-index: 1;
