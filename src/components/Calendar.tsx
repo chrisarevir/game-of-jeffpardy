@@ -11,27 +11,25 @@ interface CalendarProps {
 
 const Calendar = () => {
   const selectedDate = new Date();
+  const month = getMonth(selectedDate);
 
-  const categoryCell = (
-    <td>
-      <Text variant="primary">Category</Text>
-    </td>
+  const getDayOfWeek = (dayOfWeek: string) => (
+    <th>
+      <Text variant="primary">{dayOfWeek}</Text>
+    </th>
   );
-
-  const month = getMonth(categoryCell, selectedDate);
 
   return (
     <Table bordered dark centered>
       <thead>
         <tr>
-          <th></th>
-          <th>Sunday</th>
-          <th>Monday</th>
-          <th>Tuesday</th>
-          <th>Wednesday</th>
-          <th>Thursday</th>
-          <th>Friday</th>
-          <th>Saturday</th>
+          {getDayOfWeek("Sunday")}
+          {getDayOfWeek("Monday")}
+          {getDayOfWeek("Tuesday")}
+          {getDayOfWeek("Wednesday")}
+          {getDayOfWeek("Thursday")}
+          {getDayOfWeek("Friday")}
+          {getDayOfWeek("Saturday")}
         </tr>
       </thead>
       <tbody>{month.map(week => week)}</tbody>
