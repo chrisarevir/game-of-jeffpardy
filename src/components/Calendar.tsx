@@ -18,6 +18,7 @@ import Table from "../components/Table";
 import Text from "../components/Text";
 import Icon from "../components/Icon";
 import Container from "../components/Container";
+import { HashRouter as Router, Link, Route } from "react-router-dom";
 
 export const getDayOfWeekLabel = (day: number) => {
   return format(addDays(startOfWeek(new Date()), day), "EEEEEE");
@@ -154,6 +155,8 @@ const Calendar: React.FC<CalendarProps> = ({
       record[lookupDate] = pointValue;
       record.totalScore += pointValue;
       setCorrect(true);
+    } else if (responseValue === "frogs" || responseValue === "Frogs") {
+      window.location.hash = "#/frogs";
     } else {
       record[lookupDate] = 0;
       setIncorrect(true);

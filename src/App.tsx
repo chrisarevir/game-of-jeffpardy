@@ -8,6 +8,7 @@ import Board from "./pages/Board";
 import Records from "./pages/Records";
 import { defaultRecord } from "./utils/constants";
 import Home from "./pages/Home";
+import Frogs from "./pages/Frogs";
 
 const App: React.FC = () => {
   const [view, setView] = React.useState(window.location.hash);
@@ -61,6 +62,13 @@ const App: React.FC = () => {
               }}
               exact
               path="/records"
+            />
+            <Route
+              component={() => {
+                return <Frogs />;
+              }}
+              exact
+              path="/frogs"
             />
           </Layout.Content>
         </Layout>
