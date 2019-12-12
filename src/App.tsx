@@ -6,6 +6,7 @@ import { HashRouter as Router, Link, Route } from "react-router-dom";
 import "./styles/reset.css";
 import "./styles/base.css";
 import Board from "./pages/Board";
+import Records from "./pages/Records";
 import { defaultRecord } from "./utils/constants";
 
 const App: React.FC = () => {
@@ -33,6 +34,9 @@ const App: React.FC = () => {
             <Menu.Item key="#/board">
               <Link to="board">Board</Link>
             </Menu.Item>
+            <Menu.Item key="#/records">
+              <Link to="records">Records</Link>
+            </Menu.Item>
           </Menu>
         </Layout.Sider>
 
@@ -55,6 +59,13 @@ const App: React.FC = () => {
               }}
               exact
               path="/board"
+            />
+            <Route
+              component={() => {
+                return <Records />;
+              }}
+              exact
+              path="/records"
             />
           </Layout.Content>
         </Layout>

@@ -48,7 +48,7 @@ const ContainerContainer = styled.div<ContainerProps>`
         padding: 0 0.5rem;
         margin: -1.8rem 0 1rem;
         font-size: 1rem;
-        background-color: #fff;
+        background-color: #f0f2f5;
 
         ${rounded &&
           css`
@@ -97,7 +97,7 @@ const ContainerContainer = styled.div<ContainerProps>`
     dark &&
     css`
       margin: 4px;
-      color: #fff;
+      color: #f0f2f5;
       background-color: #212529;
       border-color: #fff;
 
@@ -115,7 +115,7 @@ const ContainerContainer = styled.div<ContainerProps>`
       ${title &&
         css`
           & > .title {
-            color: #fff;
+            color: #f0f2f5;
             background-color: #212529;
           }
         `}
@@ -159,6 +159,10 @@ const ContainerContainer = styled.div<ContainerProps>`
         content: none;
       }
     `}
+
+  & + & {
+    margin-top: 24px;
+  }
 `;
 
 const Container: React.FC<ContainerProps> = ({ children, ...props }) => {
