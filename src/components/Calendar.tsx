@@ -22,7 +22,7 @@ const Calendar = () => {
   };
 
   /* Returns the point value for the date */
-  const getDayValue = (date: any) => "100";
+  // const getDayValue = (date: any) => "100";
 
   /* Returns an array of cells for each day of the week */
   const getDayCells = (week: number, monthDays: any, setVisible: any) => {
@@ -89,8 +89,8 @@ preceding based on the first weekday of the month */
   return (
     <>
       {visible && (
-        <Dialog>
-          <p>This is going to be an example clue?</p>
+        <Dialog onClickOutside={() => setVisible(false)} rounded>
+          This is the contents
         </Dialog>
       )}
       <Table bordered dark centered>
