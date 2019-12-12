@@ -11,9 +11,10 @@ import { range, splitEvery } from "ramda";
 import React from "react";
 
 import Dialog from "../components/Dialog";
-import getClueAndReponse from "../utils/getClueAndReponse";
+import getClueAndResponse from "../utils/getClueAndResponse";
 import Table from "../components/Table";
 import Text from "../components/Text";
+import clues from "../utils/clues";
 
 export const getDayOfWeekLabel = (day: number) => {
   return format(addDays(startOfWeek(new Date()), day), "EEEEEE");
@@ -108,7 +109,7 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate = new Date() }) => {
     <>
       {modalVisibility && (
         <Dialog onClickOutside={() => setModalVisibility(false)} rounded>
-          {JSON.stringify(getClueAndReponse(lookupDate))}
+          {getClueAndResponse(lookupDate).clue.text}
         </Dialog>
       )}
       <Table bordered dark centered style={{ width: "100%" }}>

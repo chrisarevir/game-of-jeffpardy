@@ -1,11 +1,11 @@
 import clues from "./clues";
 import responses from "./responses";
 
-function getClueAndReponse(day) {
+function getClueAndResponse(day) {
   return {
     clue: clues[day],
     response: responses[day]
   };
 }
 
-export default getClueAndReponse;
+export default getClueAndResponse;
