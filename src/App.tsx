@@ -8,6 +8,7 @@ import "./styles/base.css";
 import Board from "./pages/Board";
 import Records from "./pages/Records";
 import { defaultRecord } from "./utils/constants";
+import Home from "./pages/Home";
 
 const App: React.FC = () => {
   const [view, setView] = React.useState(window.location.hash);
@@ -43,11 +44,7 @@ const App: React.FC = () => {
           <Layout.Content style={{ padding: "24px" }}>
             <Route
               component={() => {
-                return (
-                  <div>
-                    <Icon icon="coin" size="lg" />
-                  </div>
-                );
+                return <Home />;
               }}
               exact
               path="/"
