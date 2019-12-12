@@ -38,7 +38,7 @@ const ScoreBody: React.FC<{ records: RecordShape[] }> = ({ records }) => {
     <tbody>
       {ordered.map((record, index) => {
         return (
-          <tr>
+          <tr key={`record-${record.name}-${index}`}>
             <td>{`${index + 1}`}.</td>
             <td>{record.name}</td>
             <td>
