@@ -14,7 +14,6 @@ import Dialog from "../components/Dialog";
 import getClueAndResponse from "../utils/getClueAndResponse";
 import Table from "../components/Table";
 import Text from "../components/Text";
-import clues from "../utils/clues";
 
 export const getDayOfWeekLabel = (day: number) => {
   return format(addDays(startOfWeek(new Date()), day), "EEEEEE");
