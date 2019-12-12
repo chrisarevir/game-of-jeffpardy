@@ -83,13 +83,15 @@ const MonthBody: React.FC<{
             const hasDailyRecord = dailyRecord !== "";
             const isClickable = hasQuestion && day <= 14;
             return (
-              <td
-                key={`day-${day}-${dayIndex}`}
-                onClick={
-                  isClickable ? e => onDayClick(e, hasDailyRecord) : undefined
-                }
-              >
-                {hasQuestion ? day : ""}
+              <td key={`day-${day}-${dayIndex}`}>
+                <Text
+                  onClick={
+                    isClickable ? e => onDayClick(e, hasDailyRecord) : undefined
+                  }
+                  variant={isClickable ? "primary" : "disabled"}
+                >
+                  {hasQuestion ? day : ""}
+                </Text>
               </td>
             );
           })}
@@ -113,11 +115,11 @@ const Calendar: React.FC<CalendarProps> = ({
     clue: { category: "", text: "", value: 0 },
     response: {}
   });
+
   const [correct, setCorrect] = React.useState(false);
   const [incorrect, setIncorrect] = React.useState(false);
   const [lookupDate, setLookupDate] = React.useState("");
   const [hasRecord, setHasRecord] = React.useState(false);
-  // const [viewDate, setViewDate] = React.useState(selectedDate);
 
   const viewDate = selectedDate;
 
@@ -125,6 +127,7 @@ const Calendar: React.FC<CalendarProps> = ({
     setModalVisibility(true);
     setHasRecord(hasDailyRecord);
 
+    debugger;
     const offset = parseInt(e.currentTarget.innerHTML, 10) - 1;
     const lookupKey = format(
       addDays(startOfMonth(viewDate), offset),
