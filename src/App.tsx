@@ -51,7 +51,7 @@ const App: React.FC = () => {
             />
             <Route
               component={() => {
-                return <Board />;
+                return <Board record={record} />;
               }}
               exact
               path="/board"

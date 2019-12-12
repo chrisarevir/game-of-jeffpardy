@@ -1,10 +1,14 @@
 import React from "react";
 import Calendar from "../components/Calendar";
 
-const Board: React.FC = () => {
+interface BoardProps {
+  record?: {};
+}
+
+const Board: React.FC<BoardProps> = ({ record }) => {
   return (
     <>
-      <Calendar />
+      <Calendar record={record} />
     </>
   );
 };
