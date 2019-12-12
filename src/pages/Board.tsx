@@ -1,4 +1,5 @@
 import React from "react";
+import Container from "../components/Container";
 import Calendar from "../components/Calendar";
 
 interface BoardProps {
@@ -8,7 +9,9 @@ interface BoardProps {
 const Board: React.FC<BoardProps> = ({ record }) => {
   return (
     <>
-      <Calendar record={record} />
+      <Container title="December">
+        <Calendar record={record} />
+      </Container>
     </>
   );
 };
