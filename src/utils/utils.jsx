@@ -16,14 +16,18 @@ Calendar helper functions
 const getDayValue = date => "100";
 
 /* Returns an array of cells for each day of the week */
-const getDayCells = (week, monthDays) => {
+const getDayCells = (week, monthDays, setVisible) => {
   const dayCells = [];
   // const dayValue(date) = getDayValue();
 
   const daysLeft = monthDays.slice(7 * week);
 
   for (var day = 0; day < 7; day++) {
-    dayCells.push(<td key={`${week}-${day}`}>{daysLeft[day]}</td>);
+    dayCells.push(
+      <td key={`${week}-${day}`} onClick={() => setVisible(true)}>
+        {daysLeft[day]}
+      </td>
+    );
   }
 
   return dayCells;
@@ -51,13 +55,13 @@ const getDays = selectedDate => {
 };
 
 /* Returns an array of rows for each week in the month */
-export const getMonth = selectedDate => {
+export const getMonth = (selectedDate, setVisible) => {
   const weeksInMonth = getWeeksInMonth(selectedDate);
   const days = getDays(selectedDate);
   const month = [];
 
   for (var week = 0; week < weeksInMonth; week++) {
-    const dayCells = getDayCells(week, days);
+    const dayCells = getDayCells(week, days, setVisible);
     month.push(<tr>{dayCells.map(day => day)}</tr>);
   }
 
