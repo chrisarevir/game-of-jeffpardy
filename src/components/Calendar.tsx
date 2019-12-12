@@ -8,6 +8,7 @@ import {
   getWeeksInMonth,
   startOfMonth
 } from "date-fns";
+import getClueAndReponse from "../utils/getClueAndReponse";
 
 interface CalendarProps {
   selectedDate?: Date;
@@ -23,7 +24,7 @@ const Calendar = () => {
   };
 
   /* Returns the point value for the date */
-  const getDayValue = (date: any) => "100";
+  // const getDayValue = (date: any) => "100";
 
   /* Returns an array of cells for each day of the week */
   const getDayCells = (week: number, monthDays: any, setVisible: any) => {
@@ -89,8 +90,8 @@ preceding based on the first weekday of the month */
   return (
     <>
       {visible && (
-        <Dialog>
-          <p>This is going to be an example clue?</p>
+        <Dialog onClickOutside={() => setVisible(false)} rounded>
+          {JSON.stringify(getClueAndReponse("2019-12-11"))}
         </Dialog>
       )}
       <Table bordered dark centered>
