@@ -9,6 +9,12 @@ import Records from "./pages/Records";
 import { defaultRecord } from "./utils/constants";
 import Home from "./pages/Home";
 import Frogs from "./pages/Frogs";
+import SignUp from "./pages/SignUp";
+import SignIn from "./pages/SignIn";
+// import Account from './pages/Account';
+import Admin from "./pages/Admin";
+import PasswordForget from "./pages/PasswordForget";
+import Button from "./components/Button";
 
 const App: React.FC = () => {
   const [view, setView] = React.useState(window.location.hash);
@@ -37,7 +43,25 @@ const App: React.FC = () => {
             <Menu.Item key="#/records">
               <Link to="records">Records</Link>
             </Menu.Item>
+            <Menu.Item key="#/signup">
+              <Link to="signup">Sign Up</Link>
+            </Menu.Item>
+            <Menu.Item key="#/signin">
+              <Link to="signin">Sign In</Link>
+            </Menu.Item>
+            <Menu.Item key="#/admin">
+              <Link to="admin">Admin</Link>
+            </Menu.Item>
           </Menu>
+          <div>
+            <Button
+              onClick={() => {}}
+              style={{ height: "2.5rem", marginLeft: "1.5rem" }}
+              variant="primary"
+            >
+              Sign Out
+            </Button>
+          </div>
         </Layout.Sider>
 
         <Layout>
@@ -69,6 +93,34 @@ const App: React.FC = () => {
               }}
               exact
               path="/frogs"
+            />
+            <Route
+              component={() => {
+                return <SignUp />;
+              }}
+              exact
+              path="/signup"
+            />
+            <Route
+              component={() => {
+                return <SignIn />;
+              }}
+              exact
+              path="/signin"
+            />
+            <Route
+              component={() => {
+                return <Admin />;
+              }}
+              exact
+              path="/admin"
+            />
+            <Route
+              component={() => {
+                return <PasswordForget />;
+              }}
+              exact
+              path="/pw-forget"
             />
           </Layout.Content>
         </Layout>
