@@ -18,7 +18,6 @@ import Table from "../components/Table";
 import Text from "../components/Text";
 import Icon from "../components/Icon";
 import Container from "../components/Container";
-import { HashRouter as Router, Link, Route } from "react-router-dom";
 
 export const getDayOfWeekLabel = (day: number) => {
   return format(addDays(startOfWeek(new Date()), day), "EEEEEE");
@@ -84,14 +83,15 @@ const MonthBody: React.FC<{
 
             const hasDailyRecord = dailyRecord !== "";
             const isClickable = hasQuestion && day <= 14;
+
             return (
-              <td key={`day-${day}-${dayIndex}`}>
-                <Text
-                  onClick={
-                    isClickable ? e => onDayClick(e, hasDailyRecord) : undefined
-                  }
-                  variant={isClickable ? "primary" : "disabled"}
-                >
+              <td
+                key={`day-${day}-${dayIndex}`}
+                onClick={
+                  isClickable ? e => onDayClick(e, hasDailyRecord) : undefined
+                }
+              >
+                <Text variant={isClickable ? "primary" : "disabled"}>
                   {hasQuestion ? day : ""}
                 </Text>
               </td>
@@ -129,7 +129,7 @@ const Calendar: React.FC<CalendarProps> = ({
     setModalVisibility(true);
     setHasRecord(hasDailyRecord);
 
-    const offset = parseInt(e.currentTarget.innerHTML, 10) - 1;
+    const offset = parseInt(e.currentTarget.children[0].innerHTML, 10) - 1;
     const lookupKey = format(
       addDays(startOfMonth(viewDate), offset),
       "yyyy-MM-dd"

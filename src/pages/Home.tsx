@@ -124,12 +124,12 @@ const Home: React.FC = () => {
       </Column>
 
       <iframe
-        title="jeffpardy video"
-        style={{ height: "500px", width: "800px", marginTop: "24px" }}
-        src="https://www.youtube.com/embed/9g3--WYH8SY"
-        frameBorder="0"
         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
+        frameBorder="0"
+        src="https://www.youtube.com/embed/9g3--WYH8SY"
+        style={{ height: "500px", width: "800px", marginTop: "24px" }}
+        title="jeffpardy video"
       ></iframe>
     </>
   );
