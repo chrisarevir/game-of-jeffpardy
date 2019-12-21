@@ -12,10 +12,10 @@ const SignUp = () => {
     const userEmail = document.getElementById("email_input").value;
     const userPassword = document.getElementById("password_input").value;
 
-    // firebase
-    //   .createUser(userEmail, userPassword)
-    //   .then(() => (window.location.hash = "#/home"))
-    //   .catch(error => setFirebaseError(error));
+    firebase
+      .createUser(userEmail, userPassword)
+      .then(() => (window.location.hash = "#/home"))
+      .catch(error => setFirebaseError(error));
   };
 
   // TODO: validation on user creation

@@ -56,8 +56,12 @@ const App: React.FC = () => {
           <div>
             <Button
               onClick={() => {}}
-              style={{ height: "2.5rem", marginLeft: "1.5rem" }}
-              variant="primary"
+              style={{
+                height: "2.5rem",
+                marginLeft: "1.5rem",
+                marginTop: "19rem"
+              }}
+              variant="error"
             >
               Sign Out
             </Button>
