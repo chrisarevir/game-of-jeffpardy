@@ -10,20 +10,23 @@ import {
 import { range, splitEvery } from "ramda";
 import React from "react";
 
+import { FirebaseContext } from "../components/Firebase";
+
 import Button from "../components/Button";
 import Dialog from "../components/Dialog";
-import getClueAndResponse from "../utils/getClueAndResponse";
 import Input from "../components/Input";
 import Table from "../components/Table";
 import Text from "../components/Text";
 import Icon from "../components/Icon";
 import Container from "../components/Container";
 
-export const getDayOfWeekLabel = (day: number) => {
+import { defaultClueAndResponse } from "../utils/constants";
+
+export const getDayOfWeekLabel = day => {
   return format(addDays(startOfWeek(new Date()), day), "EEEEEE");
 };
 
-const Weekdays: React.FC = () => {
+const Weekdays = () => {
   return (
     <thead>
       <tr>
@@ -41,14 +44,7 @@ const Weekdays: React.FC = () => {
   );
 };
 
-const MonthBody: React.FC<{
-  viewDate: Date;
-  onDayClick: (
-    event: React.MouseEvent<HTMLElement>,
-    hasDailyRecord: boolean
-  ) => void;
-  record: any;
-}> = ({ viewDate, onDayClick, record }) => {
+const MonthBody = ({ viewDate, onDayClick, record }) => {
   const daysInMonth = getDaysInMonth(viewDate);
   const weeksInMonth = getWeeksInMonth(viewDate);
   const offset = getDay(startOfMonth(viewDate));
@@ -82,19 +78,27 @@ const MonthBody: React.FC<{
             }
 
             const hasDailyRecord = dailyRecord !== "";
+            /* TODO: fix isClickable logic so all days of the current
+                month prior to today are clickable */
             const isClickable = hasQuestion && day <= 14;
 
             return (
-              <td
-                key={`day-${day}-${dayIndex}`}
-                onClick={
-                  isClickable ? e => onDayClick(e, hasDailyRecord) : undefined
-                }
-              >
-                <Text variant={isClickable ? "primary" : "disabled"}>
-                  {hasQuestion ? day : ""}
-                </Text>
-              </td>
+              <FirebaseContext.Consumer key={Math.random()}>
+                {firebase => (
+                  <td
+                    key={`day-${day}-${dayIndex}`}
+                    onClick={
+                      isClickable
+                        ? e => onDayClick(e, firebase, hasDailyRecord)
+                        : undefined
+                    }
+                  >
+                    <Text variant={isClickable ? "primary" : "disabled"}>
+                      {hasQuestion ? day : ""}
+                    </Text>
+                  </td>
+                )}
+              </FirebaseContext.Consumer>
             );
           })}
         </tr>
@@ -103,30 +107,19 @@ const MonthBody: React.FC<{
   );
 };
 
-interface CalendarProps {
-  record?: any;
-  selectedDate?: Date;
-}
-
-const Calendar: React.FC<CalendarProps> = ({
-  record = {},
-  selectedDate = new Date()
-}) => {
+const Calendar = ({ record, setRecord, selectedDate = new Date() }) => {
   const [modalVisibility, setModalVisibility] = React.useState(false);
-  const [clueAndResponse, setClueAndResponse] = React.useState({
-    clue: { category: "", text: "", value: 0 },
-    response: ""
-  });
+  const [clueAndResponse, setClueAndResponse] = React.useState(
+    defaultClueAndResponse
+  );
 
-  const [correct, setCorrect] = React.useState(false);
   const [incorrect, setIncorrect] = React.useState(false);
   const [lookupDate, setLookupDate] = React.useState("");
   const [hasRecord, setHasRecord] = React.useState(false);
 
   const viewDate = selectedDate;
 
-  const onDayClick = (e: React.MouseEvent, hasDailyRecord: boolean) => {
-    setModalVisibility(true);
+  const onDayClick = (e, firebase, hasDailyRecord) => {
     setHasRecord(hasDailyRecord);
 
     const offset = parseInt(e.currentTarget.children[0].innerHTML, 10) - 1;
@@ -136,51 +129,67 @@ const Calendar: React.FC<CalendarProps> = ({
     );
 
     setLookupDate(lookupKey);
-    setClueAndResponse(getClueAndResponse(lookupKey));
+
+    const promises = [
+      firebase.getClueForSelectedDay(lookupKey),
+      firebase.getResponseForSelectedDay(lookupKey)
+    ];
+
+    //TODO: Why is it defaulting to 1. you already answered and 2. you answered incorrectly?
+
+    Promise.all(promises).then(responses => {
+      setClueAndResponse({
+        clue: responses[0],
+        response: responses[1]
+      });
+      setModalVisibility(true);
+    });
   };
 
   const onSubmitResponse = () => {
-    setCorrect(false);
     setIncorrect(false);
 
-    const responseInput = document.getElementById(
-      "response_input"
-    ) as HTMLInputElement;
+    const responseInput = document.getElementById("response_input");
 
     const responseValue = responseInput.value.toLowerCase();
     const pointValue = clueAndResponse.clue.value;
-    const correctResponse = clueAndResponse.response.toLowerCase();
+    const correctResponse = clueAndResponse.response.question.toLowerCase();
 
     if (responseValue === correctResponse) {
-      record[lookupDate] = pointValue;
-      record.totalScore += pointValue;
-      setCorrect(true);
+      record.scores.push({
+        [lookupDate]: pointValue
+      });
+      record.total_score += pointValue;
+      setRecord(record);
+      // push changes to DB
+      // do I need to call setRecord? Will that rerender? Is that a problem?
     } else if (responseValue === "frogs" || responseValue === "Frogs") {
       window.location.hash = "#/frogs";
     } else {
-      record[lookupDate] = 0;
+      record.scores.push({
+        [lookupDate]: 0
+      });
       setIncorrect(true);
     }
 
-    record.modified = true;
-    localStorage.setItem("playerRecord", JSON.stringify(record));
     setTimeout(() => setModalVisibility(false), 3000);
   };
 
   const onClickShim = () => {
     setModalVisibility(false);
-    setCorrect(false);
     setIncorrect(false);
+    setClueAndResponse(defaultClueAndResponse);
   };
 
+  const scoreForSelectedDate = record.scores.find(score => score[lookupDate]);
   const answeredCorrectly =
-    record[lookupDate] == "100" || record[lookupDate] == "500";
+    scoreForSelectedDate && scoreForSelectedDate[lookupDate] !== 0;
 
   return (
     <>
       {modalVisibility && (
         <Dialog onClickOutside={() => onClickShim()} rounded>
-          <Container title={clueAndResponse.clue.value.toString()}>
+          <Container title={clueAndResponse.clue.category.toString()}>
             <div
               style={{
                 display: "flex",
@@ -188,7 +197,7 @@ const Calendar: React.FC<CalendarProps> = ({
               }}
             >
               {clueAndResponse.clue.text}
-              {!hasRecord && (
+              {!scoreForSelectedDate && (
                 <div style={{ display: "flex", padding: "3rem 1.5rem 0.5rem" }}>
                   <Input id="response_input" />
                   <Button onClick={onSubmitResponse} variant="primary">
@@ -197,15 +206,15 @@ const Calendar: React.FC<CalendarProps> = ({
                 </div>
               )}
               <div style={{ margin: "auto", paddingTop: "1rem" }}>
-                {(correct || (hasRecord && answeredCorrectly)) && (
+                {scoreForSelectedDate && answeredCorrectly && (
                   <Text variant="success">Correct!</Text>
                 )}
                 {incorrect && <Text variant="error">Incorrect :(</Text>}
               </div>
-              {hasRecord && (
+              {scoreForSelectedDate && (
                 <div style={{ margin: "auto", paddingTop: "1rem" }}>
                   <Text variant={answeredCorrectly ? "success" : "error"}>
-                    {clueAndResponse.response}
+                    {clueAndResponse.response.question}
                   </Text>
                 </div>
               )}

@@ -1,5 +1,7 @@
+import React from "react";
 import app from "firebase/app";
 import "firebase/auth";
+import "firebase/firestore";
 
 const config = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -17,9 +19,15 @@ class Firebase {
     app.initializeApp(config);
 
     this.auth = app.auth();
+
+    // this.auth.setPersistence("local");
+
+    this.db = app.firestore();
   }
 
-  // Auth API
+  /*****************
+   **** Auth API ****
+   *****************/
 
   createUser = (email, password) =>
     this.auth.createUserWithEmailAndPassword(email, password);
@@ -30,8 +38,75 @@ class Firebase {
   signOut = () => this.auth.signOut();
 
   resetPassword = email => this.auth.sendPasswordResetEmail(email);
-
   updatePassword = password => this.auth.currentUser.updatePassword(password);
+
+  getCurrentUser = () =>
+    new Promise((resolve, reject) => {
+      this.auth.onAuthStateChanged(function(user) {
+        if (user) {
+          resolve(user);
+        } else {
+          resolve({});
+        }
+      });
+    });
+
+  /******************
+   **** Firestore ****
+   ******************/
+
+  /* Records */
+  // addPlayerRecord = record => this.db.collection("records").add(record);
+  addPlayerRecord = (record, userId) =>
+    this.db
+      .collection("records")
+      .doc(userId)
+      .set(record);
+
+  updatePlayerRecord = updatedRecord => this.db.collection("records");
+  getPlayerRecords = () => this.db.collection("records").get();
+  getCurrentPlayerRecord = userId =>
+    this.db
+      .collection("records")
+      .doc(userId)
+      .get()
+      .then(doc => {
+        if (doc.exists) {
+          return doc.data();
+        }
+      });
+
+  /* Clues and Responses */
+
+  addClue = (clue, docId) =>
+    this.db
+      .collection("clues")
+      .doc(docId)
+      .set(clue);
+
+  getClues = () => this.db.collection("clues").get();
+
+  getClueForSelectedDay = docId =>
+    this.db
+      .collection("clues")
+      .doc(docId)
+      .get()
+      .then(doc => doc.data());
+
+  addResponse = (response, docId) =>
+    this.db
+      .collection("responses")
+      .doc(docId)
+      .set(response);
+
+  getResponses = () => this.db.collection("responses").get();
+
+  getResponseForSelectedDay = docId =>
+    this.db
+      .collection("responses")
+      .doc(docId)
+      .get()
+      .then(doc => doc.data());
 }
 
 export default Firebase;
