@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/game-of-jeffpardy/static/css/main.2f286184.chunk.css",
-    "main.js": "/game-of-jeffpardy/static/js/main.04a01e0c.chunk.js",
-    "main.js.map": "/game-of-jeffpardy/static/js/main.04a01e0c.chunk.js.map",
+    "main.js": "/game-of-jeffpardy/static/js/main.1eda37ea.chunk.js",
+    "main.js.map": "/game-of-jeffpardy/static/js/main.1eda37ea.chunk.js.map",
     "runtime-main.js": "/game-of-jeffpardy/static/js/runtime-main.6396dae0.js",
     "runtime-main.js.map": "/game-of-jeffpardy/static/js/runtime-main.6396dae0.js.map",
     "static/css/2.c726b981.chunk.css": "/game-of-jeffpardy/static/css/2.c726b981.chunk.css",
-    "static/js/2.3d92b4b9.chunk.js": "/game-of-jeffpardy/static/js/2.3d92b4b9.chunk.js",
-    "static/js/2.3d92b4b9.chunk.js.map": "/game-of-jeffpardy/static/js/2.3d92b4b9.chunk.js.map",
+    "static/js/2.5c4e54e1.chunk.js": "/game-of-jeffpardy/static/js/2.5c4e54e1.chunk.js",
+    "static/js/2.5c4e54e1.chunk.js.map": "/game-of-jeffpardy/static/js/2.5c4e54e1.chunk.js.map",
     "index.html": "/game-of-jeffpardy/index.html",
-    "precache-manifest.cd16d7867994323b9deeb97e98607a5f.js": "/game-of-jeffpardy/precache-manifest.cd16d7867994323b9deeb97e98607a5f.js",
+    "precache-manifest.2c9fb924138227021348cda0d442b0e1.js": "/game-of-jeffpardy/precache-manifest.2c9fb924138227021348cda0d442b0e1.js",
     "service-worker.js": "/game-of-jeffpardy/service-worker.js",
     "static/css/2.c726b981.chunk.css.map": "/game-of-jeffpardy/static/css/2.c726b981.chunk.css.map",
     "static/css/main.2f286184.chunk.css.map": "/game-of-jeffpardy/static/css/main.2f286184.chunk.css.map"
@@ -17,8 +17,8 @@
   "entrypoints": [
     "static/js/runtime-main.6396dae0.js",
     "static/css/2.c726b981.chunk.css",
-    "static/js/2.3d92b4b9.chunk.js",
+    "static/js/2.5c4e54e1.chunk.js",
     "static/css/main.2f286184.chunk.css",
-    "static/js/main.04a01e0c.chunk.js"
+    "static/js/main.1eda37ea.chunk.js"
   ]
 }
