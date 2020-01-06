@@ -127,6 +127,9 @@ const Calendar = ({
   const [lookupDate, setLookupDate] = React.useState("");
   const [wager, setWager] = React.useState(0);
   const [invalidWagerFlag, setInvalidWagerFlag] = React.useState({ type: "" });
+  const [emptyResponseValueFlag, setEmptyResponseValueFlag] = React.useState(
+    false
+  );
 
   const handleKeydown = evt => {
     if (evt.keyCode === 27 && modalVisibility) {
@@ -205,47 +208,53 @@ const Calendar = ({
 
     const responseInput = document.getElementById("response_input");
 
-    const responseValue = responseInput.value.toLowerCase();
-    const pointValue = clueAndResponse.clue.value;
-    const correctResponse = clueAndResponse.response.question.toLowerCase();
+    const responseValue = responseInput.value.trim().toLowerCase();
 
-    const isMainCorrectResponse = correctResponse.includes(responseValue);
+    if (responseValue.length > 0) {
+      setEmptyResponseValueFlag(false);
+      const pointValue = clueAndResponse.clue.value;
+      const correctResponse = clueAndResponse.response.question.toLowerCase();
 
-    const alternativeCorrectResponses = clueAndResponse.response.alternative_questions.toLowerCase();
-    const isAlternativeCorrectResponse = alternativeCorrectResponses.includes(
-      responseValue
-    );
+      const isMainCorrectResponse = correctResponse.includes(responseValue);
 
-    const isCorrectResponse =
-      isMainCorrectResponse || isAlternativeCorrectResponse;
+      const alternativeCorrectResponses = clueAndResponse.response.alternative_questions.toLowerCase();
+      const isAlternativeCorrectResponse = alternativeCorrectResponses.includes(
+        responseValue
+      );
 
-    if (isCorrectResponse) {
-      setCorrect(true);
-      const points = wager !== 0 ? wager : pointValue;
+      const isCorrectResponse =
+        isMainCorrectResponse || isAlternativeCorrectResponse;
 
-      record.scores.push({
-        [lookupDate]: points
-      });
+      if (isCorrectResponse) {
+        setCorrect(true);
+        const points = wager !== 0 ? wager : pointValue;
 
-      record.total_score += points;
+        record.scores.push({
+          [lookupDate]: points
+        });
 
-      setRecord(record);
-      setWager(0);
+        record.total_score += points;
 
-      firebase.updatePlayerRecord(record, currentUser.uid);
-    } else if (responseValue === "frogs" || responseValue === "Frogs") {
-      window.location.hash = "#/frogs";
+        setRecord(record);
+        setWager(0);
+
+        firebase.updatePlayerRecord(record, currentUser.uid);
+      } else if (responseValue === "frogs" || responseValue === "Frogs") {
+        window.location.hash = "#/frogs";
+      } else {
+        const pointsLost = 0 - wager;
+        record.scores.push({
+          [lookupDate]: pointsLost
+        });
+
+        record.total_score += pointsLost;
+        setRecord(record);
+        setWager(0);
+        setIncorrect(true);
+        firebase.updatePlayerRecord(record, currentUser.uid);
+      }
     } else {
-      const pointsLost = 0 - wager;
-      record.scores.push({
-        [lookupDate]: pointsLost
-      });
-
-      record.total_score += pointsLost;
-      setRecord(record);
-      setWager(0);
-      setIncorrect(true);
-      firebase.updatePlayerRecord(record, currentUser.uid);
+      setEmptyResponseValueFlag(true);
     }
   };
 
@@ -254,6 +263,7 @@ const Calendar = ({
     setCorrect(false);
     setIncorrect(false);
     setWager(0);
+    setEmptyResponseValueFlag(false);
     setClueAndResponse(defaultClueAndResponse);
   };
 
@@ -349,6 +359,13 @@ const Calendar = ({
                         >
                           Submit
                         </Button>
+                        <div style={{ paddingTop: "1rem" }}>
+                          {emptyResponseValueFlag && (
+                            <Text variant="error">
+                              You cannot submit an empty response!
+                            </Text>
+                          )}
+                        </div>
                       </div>
                     )}
                   </FirebaseContext.Consumer>
