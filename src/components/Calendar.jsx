@@ -81,8 +81,7 @@ const MonthBody = ({ viewDate, onDayClick, record }) => {
 
             const hasDailyRecord = dailyRecord !== "";
             const today = getDate(viewDate);
-            // const isClickable = hasQuestion && day <= today;
-            const isClickable = hasQuestion && day <= 7;
+            const isClickable = hasQuestion && day <= today;
 
             return (
               <FirebaseContext.Consumer key={Math.random()}>
@@ -120,6 +119,7 @@ const Calendar = ({
     defaultClueAndResponse
   );
 
+  const [correct, setCorrect] = React.useState(false);
   const [incorrect, setIncorrect] = React.useState(false);
   const [lookupDate, setLookupDate] = React.useState("");
   const [wager, setWager] = React.useState(0);
@@ -127,6 +127,8 @@ const Calendar = ({
   const viewDate = selectedDate;
 
   const onDayClick = (e, firebase) => {
+    setCorrect(false);
+
     const offset = parseInt(e.currentTarget.children[0].innerHTML, 10) - 1;
     const lookupKey = format(
       addDays(startOfMonth(viewDate), offset),
@@ -165,6 +167,7 @@ const Calendar = ({
   };
 
   const onSubmitResponse = firebase => {
+    setCorrect(false);
     setIncorrect(false);
 
     const responseInput = document.getElementById("response_input");
@@ -174,6 +177,7 @@ const Calendar = ({
     const correctResponse = clueAndResponse.response.question.toLowerCase();
 
     if (responseValue === correctResponse) {
+      setCorrect(true);
       const points = wager !== 0 ? wager * 2 : pointValue;
 
       record.scores.push({
@@ -186,43 +190,44 @@ const Calendar = ({
       setWager(0);
 
       firebase.updatePlayerRecord(record, currentUser.uid).then(response => {
-        setTimeout(() => setModalVisibility(false), 3000);
+        setTimeout(() => setModalVisibility(false), 500);
       });
     } else if (responseValue === "frogs" || responseValue === "Frogs") {
       window.location.hash = "#/frogs";
     } else {
       //TODO: account for negative points after losing a wager
-      const pointsLost = wager !== 0 ? wager : 0;
+      // const pointsLost = wager !== 0 ? wager : 0;
+      const pointsLost = 0 - wager;
       record.scores.push({
-        [lookupDate]: wager
+        [lookupDate]: pointsLost
       });
 
-      record.total_score -= pointsLost;
+      record.total_score += pointsLost;
       setRecord(record);
       setWager(0);
       setIncorrect(true);
       firebase.updatePlayerRecord(record, currentUser.uid).then(response => {
-        setTimeout(() => setModalVisibility(false), 2000);
+        setTimeout(() => setModalVisibility(false), 500);
       });
     }
   };
 
   const onClickShim = () => {
     setModalVisibility(false);
+    setCorrect(false);
     setIncorrect(false);
     setWager(0);
     setClueAndResponse(defaultClueAndResponse);
   };
 
-  console.log("record.scores", record.scores);
-  console.log({ lookupDate });
   const scoreForSelectedDate = record.scores.find(
     score => score[lookupDate] || score[lookupDate] === 0
   );
   const answeredCorrectly =
-    scoreForSelectedDate && scoreForSelectedDate[lookupDate] !== 0;
+    scoreForSelectedDate && scoreForSelectedDate[lookupDate] > 0;
 
-  console.log("score for selected date", scoreForSelectedDate, { record });
+  const currentScore = record.total_score;
+  const possibleWager = currentScore < 1000 ? 1000 : currentScore;
 
   return (
     <>
@@ -253,9 +258,15 @@ const Calendar = ({
                       Final Jeopardy!
                     </Text>
                     <div style={{ paddingBottom: "1rem" }}>
-                      You can wager up to{" "}
-                      <Text variant="primary">{record.total_score}</Text>{" "}
+                      You have{" "}
+                      <Text variant={currentScore < 0 ? "error" : "primary"}>
+                        {currentScore}
+                      </Text>{" "}
                       points.
+                    </div>
+                    <div style={{ paddingBottom: "1rem" }}>
+                      You can wager up to{" "}
+                      <Text variant="primary">{possibleWager}</Text> points.
                     </div>
                     <Input
                       id="final_jeopardy_wager_input"
@@ -297,10 +308,12 @@ const Calendar = ({
                   </FirebaseContext.Consumer>
                 )}
               <div style={{ margin: "auto", paddingTop: "1rem" }}>
-                {scoreForSelectedDate && answeredCorrectly && (
+                {(answeredCorrectly || correct) && (
                   <Text variant="success">Correct!</Text>
                 )}
-                {incorrect && <Text variant="error">Incorrect :(</Text>}
+                {incorrect && answeredCorrectly === false && (
+                  <Text variant="error">Incorrect :(</Text>
+                )}
               </div>
               {scoreForSelectedDate && (
                 <div style={{ margin: "auto", paddingTop: "1rem" }}>

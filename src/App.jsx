@@ -37,7 +37,7 @@ const App = () => {
             const playerRecords = [];
             responses[1].forEach(doc =>
               playerRecords.push({
-                name: "Dan Ryckert",
+                name: doc.data().username,
                 total_score: doc.data().total_score
               })
             );
@@ -80,13 +80,13 @@ const App = () => {
                         <Link to="account">Account</Link>
                       </Menu.Item>
                     )}
-                    {user && user.uid && (
+                    {/* {user && user.uid && (
                       <Menu.Item key="#/admin">
                         <Link to="admin">Admin</Link>
                       </Menu.Item>
-                    )}
+                    )} */}
                   </Menu>
-                  {user && user.uid && <SignOutButton />}
+                  {/* {user && user.uid && <SignOutButton />} */}
                 </Layout.Sider>
 
                 <Layout>
@@ -119,7 +119,6 @@ const App = () => {
                             record={record}
                             records={records}
                             setRecord={setRecord}
-                            setRecords={setRecords}
                           />
                         );
                       }}

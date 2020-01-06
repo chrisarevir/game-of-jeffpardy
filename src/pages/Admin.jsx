@@ -18,7 +18,7 @@ const Admin = () => {
 
     responseData.forEach(response => {
       const docId = format(new Date(response.date), "yyyy-MM-dd");
-      firebase.addResponse(response);
+      firebase.addResponse(response, docId);
     });
   };
 

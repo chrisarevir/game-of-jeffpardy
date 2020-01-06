@@ -5,7 +5,7 @@ const FontColor = {
   success: "#92cc41",
   warning: "#f7d51d",
   error: "#e76e55",
-  disabled: "#d3d3d3"
+  disabled: "#3236c9"
 } as const;
 
 type TextVariant = "primary" | "success" | "warning" | "error" | "disabled";

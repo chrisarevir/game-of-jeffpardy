@@ -44,7 +44,7 @@ const ScoreBody = ({ records }) => {
   );
 };
 
-const Records = ({ currentUser, record, records, setRecord, setRecords }) => {
+const Records = ({ currentUser, record, records, setRecord }) => {
   return (
     <FirebaseContext.Consumer>
       {firebase => {
@@ -87,7 +87,7 @@ const Records = ({ currentUser, record, records, setRecord, setRecords }) => {
                       <th>Score</th>
                     </tr>
                   </thead>
-                  <ScoreBody records={records} />
+                  <ScoreBody record={record} records={records} />
                 </Table>
               </Container>
             </>
