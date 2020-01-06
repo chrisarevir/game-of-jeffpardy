@@ -8,7 +8,7 @@ import {
   startOfMonth,
   startOfWeek
 } from "date-fns";
-import { range, splitEvery } from "ramda";
+import { range, splitEvery, trim } from "ramda";
 import React from "react";
 
 import { FirebaseContext } from "../components/Firebase";
@@ -202,6 +202,31 @@ const Calendar = ({
     }
   };
 
+  const checkForQuestionFormat = responseValue => {
+    const questionStarts = [
+      "who is",
+      "what is",
+      "when is",
+      "where is",
+      "where are",
+      "who are",
+      "what are",
+      "when are",
+      "why is",
+      "why are"
+    ];
+
+    let updatedValue = responseValue;
+
+    questionStarts.forEach(start => {
+      if (responseValue.includes(start)) {
+        updatedValue = responseValue.replace(start, "").trim();
+      }
+    });
+
+    return updatedValue;
+  };
+
   const onSubmitResponse = firebase => {
     setCorrect(false);
     setIncorrect(false);
@@ -215,7 +240,11 @@ const Calendar = ({
       const pointValue = clueAndResponse.clue.value;
       const correctResponse = clueAndResponse.response.question.toLowerCase();
 
-      const isMainCorrectResponse = correctResponse.includes(responseValue);
+      const responseValueToCompare = checkForQuestionFormat(responseValue);
+
+      const isMainCorrectResponse = correctResponse.includes(
+        responseValueToCompare
+      );
 
       const alternativeCorrectResponses = clueAndResponse.response.alternative_questions.toLowerCase();
       const isAlternativeCorrectResponse = alternativeCorrectResponses.includes(
