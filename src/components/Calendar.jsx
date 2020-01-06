@@ -124,6 +124,14 @@ const Calendar = ({
   const [lookupDate, setLookupDate] = React.useState("");
   const [wager, setWager] = React.useState(0);
 
+  const handleKeydown = evt => {
+    if (evt.keyCode === 27 && modalVisibility) {
+      setModalVisibility(false);
+    }
+  };
+
+  document.addEventListener("keydown", evt => handleKeydown(evt), false);
+
   const viewDate = selectedDate;
 
   const onDayClick = (e, firebase) => {
