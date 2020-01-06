@@ -20,17 +20,35 @@ const App = () => {
   const [view, setView] = React.useState(window.location.hash);
   const [user, setUser] = React.useState(null);
   const [record, setRecord] = React.useState({});
+  const [records, setRecords] = React.useState([]);
 
   return (
     <FirebaseContext.Consumer>
       {firebase => {
         if (!user) {
-          firebase.getCurrentUser().then(response => setUser(response));
-          // setUser(currentUser);
+          const promises = [
+            firebase.getCurrentUser(),
+            firebase.getPlayerRecords()
+          ];
+
+          Promise.all(promises).then(responses => {
+            setUser(responses[0]);
+
+            const playerRecords = [];
+            responses[1].forEach(doc =>
+              playerRecords.push({
+                name: "Dan Ryckert",
+                total_score: doc.data().total_score
+              })
+            );
+
+            setRecords(playerRecords);
+          });
         }
 
         return (
-          user && (
+          user &&
+          records.length > 0 && (
             <Router>
               <Layout style={{ minHeight: "100vh" }}>
                 <Layout.Sider theme="light">
@@ -47,12 +65,16 @@ const App = () => {
                         <Link to="board">Board</Link>
                       </Menu.Item>
                     )}
-                    <Menu.Item key="#/records">
-                      <Link to="records">Standings</Link>
-                    </Menu.Item>
-                    <Menu.Item key="#/signin">
-                      <Link to="signin">Sign In</Link>
-                    </Menu.Item>
+                    {user && user.uid && (
+                      <Menu.Item key="#/records">
+                        <Link to="records">Standings</Link>
+                      </Menu.Item>
+                    )}
+                    {!user.uid && (
+                      <Menu.Item key="#/signin">
+                        <Link to="signin">Sign In</Link>
+                      </Menu.Item>
+                    )}
                     {user && user.uid && (
                       <Menu.Item key="#/account">
                         <Link to="account">Account</Link>
@@ -91,7 +113,15 @@ const App = () => {
                     />
                     <Route
                       component={() => {
-                        return <Records record={{}} />;
+                        return (
+                          <Records
+                            currentUser={user}
+                            record={record}
+                            records={records}
+                            setRecord={setRecord}
+                            setRecords={setRecords}
+                          />
+                        );
                       }}
                       exact
                       path="/records"
@@ -127,7 +157,7 @@ const App = () => {
                     {user && (
                       <Route
                         component={() => {
-                          return <Account user={user} />;
+                          return <Account record={record} user={user} />;
                         }}
                         exact
                         path="/account"

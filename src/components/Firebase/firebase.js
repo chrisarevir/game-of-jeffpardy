@@ -56,15 +56,20 @@ class Firebase {
    ******************/
 
   /* Records */
-  // addPlayerRecord = record => this.db.collection("records").add(record);
   addPlayerRecord = (record, userId) =>
     this.db
       .collection("records")
       .doc(userId)
       .set(record);
 
-  updatePlayerRecord = updatedRecord => this.db.collection("records");
+  updatePlayerRecord = (updatedRecord, userId) =>
+    this.db
+      .collection("records")
+      .doc(userId)
+      .update(updatedRecord);
+
   getPlayerRecords = () => this.db.collection("records").get();
+
   getCurrentPlayerRecord = userId =>
     this.db
       .collection("records")

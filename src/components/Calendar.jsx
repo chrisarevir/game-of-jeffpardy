@@ -1,6 +1,7 @@
 import {
   addDays,
   format,
+  getDate,
   getDay,
   getDaysInMonth,
   getWeeksInMonth,
@@ -54,6 +55,7 @@ const MonthBody = ({ viewDate, onDayClick, record }) => {
   let prefix = 0;
   while (prefix < offset) {
     days.unshift(0);
+    prefix++;
   }
 
   let suffix = days.length;
@@ -78,9 +80,9 @@ const MonthBody = ({ viewDate, onDayClick, record }) => {
             }
 
             const hasDailyRecord = dailyRecord !== "";
-            /* TODO: fix isClickable logic so all days of the current
-                month prior to today are clickable */
-            const isClickable = hasQuestion && day <= 14;
+            const today = getDate(viewDate);
+            // const isClickable = hasQuestion && day <= today;
+            const isClickable = hasQuestion && day <= 7;
 
             return (
               <FirebaseContext.Consumer key={Math.random()}>
@@ -107,7 +109,12 @@ const MonthBody = ({ viewDate, onDayClick, record }) => {
   );
 };
 
-const Calendar = ({ record, setRecord, selectedDate = new Date() }) => {
+const Calendar = ({
+  currentUser,
+  record,
+  setRecord,
+  selectedDate = new Date()
+}) => {
   const [modalVisibility, setModalVisibility] = React.useState(false);
   const [clueAndResponse, setClueAndResponse] = React.useState(
     defaultClueAndResponse
@@ -115,13 +122,11 @@ const Calendar = ({ record, setRecord, selectedDate = new Date() }) => {
 
   const [incorrect, setIncorrect] = React.useState(false);
   const [lookupDate, setLookupDate] = React.useState("");
-  const [hasRecord, setHasRecord] = React.useState(false);
+  const [wager, setWager] = React.useState(0);
 
   const viewDate = selectedDate;
 
-  const onDayClick = (e, firebase, hasDailyRecord) => {
-    setHasRecord(hasDailyRecord);
-
+  const onDayClick = (e, firebase) => {
     const offset = parseInt(e.currentTarget.children[0].innerHTML, 10) - 1;
     const lookupKey = format(
       addDays(startOfMonth(viewDate), offset),
@@ -135,18 +140,31 @@ const Calendar = ({ record, setRecord, selectedDate = new Date() }) => {
       firebase.getResponseForSelectedDay(lookupKey)
     ];
 
-    //TODO: Why is it defaulting to 1. you already answered and 2. you answered incorrectly?
-
     Promise.all(promises).then(responses => {
       setClueAndResponse({
         clue: responses[0],
         response: responses[1]
       });
+
       setModalVisibility(true);
     });
   };
 
-  const onSubmitResponse = () => {
+  const onValidateFinalJeopardyWager = wager => {
+    const isWithinTotalScoreRange = wager <= record.total_score;
+
+    // let them wager 1000 if under 1000 or 0 or negative
+    // if (!isWithinTotalScoreRange && record.total_score <= 1000 && wager <= 1000)
+    // const isValidFinalJeopardyWager = isWithinTotalScoreRange ||
+  };
+
+  const onSetFinalJeopardyWager = () => {
+    const wagerInput = document.getElementById("final_jeopardy_wager_input");
+    const wagerValue = parseInt(wagerInput.value, 10);
+    setWager(wagerValue);
+  };
+
+  const onSubmitResponse = firebase => {
     setIncorrect(false);
 
     const responseInput = document.getElementById("response_input");
@@ -156,34 +174,55 @@ const Calendar = ({ record, setRecord, selectedDate = new Date() }) => {
     const correctResponse = clueAndResponse.response.question.toLowerCase();
 
     if (responseValue === correctResponse) {
+      const points = wager !== 0 ? wager * 2 : pointValue;
+
       record.scores.push({
-        [lookupDate]: pointValue
+        [lookupDate]: points
       });
-      record.total_score += pointValue;
+
+      record.total_score += points;
+
       setRecord(record);
-      // push changes to DB
-      // do I need to call setRecord? Will that rerender? Is that a problem?
+      setWager(0);
+
+      firebase.updatePlayerRecord(record, currentUser.uid).then(response => {
+        setTimeout(() => setModalVisibility(false), 3000);
+      });
     } else if (responseValue === "frogs" || responseValue === "Frogs") {
       window.location.hash = "#/frogs";
     } else {
+      //TODO: account for negative points after losing a wager
+      const pointsLost = wager !== 0 ? wager : 0;
       record.scores.push({
-        [lookupDate]: 0
+        [lookupDate]: wager
       });
-      setIncorrect(true);
-    }
 
-    setTimeout(() => setModalVisibility(false), 3000);
+      record.total_score -= pointsLost;
+      setRecord(record);
+      setWager(0);
+      setIncorrect(true);
+      firebase.updatePlayerRecord(record, currentUser.uid).then(response => {
+        setTimeout(() => setModalVisibility(false), 2000);
+      });
+    }
   };
 
   const onClickShim = () => {
     setModalVisibility(false);
     setIncorrect(false);
+    setWager(0);
     setClueAndResponse(defaultClueAndResponse);
   };
 
-  const scoreForSelectedDate = record.scores.find(score => score[lookupDate]);
+  console.log("record.scores", record.scores);
+  console.log({ lookupDate });
+  const scoreForSelectedDate = record.scores.find(
+    score => score[lookupDate] || score[lookupDate] === 0
+  );
   const answeredCorrectly =
     scoreForSelectedDate && scoreForSelectedDate[lookupDate] !== 0;
+
+  console.log("score for selected date", scoreForSelectedDate, { record });
 
   return (
     <>
@@ -197,14 +236,66 @@ const Calendar = ({ record, setRecord, selectedDate = new Date() }) => {
               }}
             >
               {clueAndResponse.clue.text}
-              {!scoreForSelectedDate && (
-                <div style={{ display: "flex", padding: "3rem 1.5rem 0.5rem" }}>
-                  <Input id="response_input" />
-                  <Button onClick={onSubmitResponse} variant="primary">
-                    Submit
-                  </Button>
-                </div>
-              )}
+              {clueAndResponse.clue.jeopardy === "FINAL" &&
+                !wager &&
+                !scoreForSelectedDate && (
+                  <div
+                    style={{
+                      display: "inline-block",
+                      paddingTop: "3rem",
+                      textAlign: "center"
+                    }}
+                  >
+                    <Text
+                      style={{ display: "block", paddingBottom: "1rem" }}
+                      variant="warning"
+                    >
+                      Final Jeopardy!
+                    </Text>
+                    <div style={{ paddingBottom: "1rem" }}>
+                      You can wager up to{" "}
+                      <Text variant="primary">{record.total_score}</Text>{" "}
+                      points.
+                    </div>
+                    <Input
+                      id="final_jeopardy_wager_input"
+                      style={{ marginBottom: "1.5rem", maxWidth: "10rem" }}
+                    />
+                    <Button onClick={onSetFinalJeopardyWager} variant="warning">
+                      Wager
+                    </Button>
+                  </div>
+                )}
+              {!scoreForSelectedDate &&
+                (clueAndResponse.clue.jeopardy !== "FINAL" || wager !== 0) && (
+                  <FirebaseContext.Consumer>
+                    {firebase => (
+                      <div
+                        style={{
+                          display: "inline-block",
+                          paddingTop: "3rem",
+                          textAlign: "center"
+                        }}
+                      >
+                        {wager !== 0 && (
+                          <div style={{ paddingBottom: "1rem" }}>
+                            Your wager: <Text variant="primary">{wager}</Text>
+                          </div>
+                        )}
+                        <Input
+                          id="response_input"
+                          style={{ marginBottom: "1.5rem" }}
+                        />
+                        <Button
+                          onClick={() => onSubmitResponse(firebase)}
+                          variant="primary"
+                        >
+                          Submit
+                        </Button>
+                      </div>
+                    )}
+                  </FirebaseContext.Consumer>
+                )}
               <div style={{ margin: "auto", paddingTop: "1rem" }}>
                 {scoreForSelectedDate && answeredCorrectly && (
                   <Text variant="success">Correct!</Text>

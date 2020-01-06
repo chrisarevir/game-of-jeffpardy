@@ -4,6 +4,7 @@ import Button from "./Button";
 import { FirebaseContext } from "../components/Firebase";
 
 const SignOutButton = () => {
+  // TODO: let people sign out
   const onSignOut = firebase => {};
 
   return (

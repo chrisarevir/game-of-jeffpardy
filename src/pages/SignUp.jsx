@@ -27,7 +27,8 @@ const SignUp = ({ setUser }) => {
         .then(({ user }) => {
           const playerRecord = {
             ...defaultPlayerRecord,
-            user_id: user.uid
+            user_id: user.uid,
+            username: user.displayName
           };
 
           firebase.addPlayerRecord(playerRecord, user.uid);
