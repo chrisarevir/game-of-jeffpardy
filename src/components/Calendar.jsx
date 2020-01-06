@@ -209,13 +209,15 @@ const Calendar = ({
     const pointValue = clueAndResponse.clue.value;
     const correctResponse = clueAndResponse.response.question.toLowerCase();
 
+    const isMainCorrectResponse = correctResponse.includes(responseValue);
+
     const alternativeCorrectResponses = clueAndResponse.response.alternative_questions.toLowerCase();
     const isAlternativeCorrectResponse = alternativeCorrectResponses.includes(
       responseValue
     );
 
     const isCorrectResponse =
-      responseValue === correctResponse || isAlternativeCorrectResponse;
+      isMainCorrectResponse || isAlternativeCorrectResponse;
 
     if (isCorrectResponse) {
       setCorrect(true);

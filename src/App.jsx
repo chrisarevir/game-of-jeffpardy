@@ -35,12 +35,14 @@ const App = () => {
             setUser(responses[0]);
 
             const playerRecords = [];
-            responses[1].forEach(doc =>
-              playerRecords.push({
-                name: doc.data().username,
-                total_score: doc.data().total_score
-              })
-            );
+            responses[1].forEach(doc => {
+              if (doc.data().username !== "Jeff") {
+                playerRecords.push({
+                  name: doc.data().username,
+                  total_score: doc.data().total_score
+                });
+              }
+            });
 
             setRecords(playerRecords);
           });
