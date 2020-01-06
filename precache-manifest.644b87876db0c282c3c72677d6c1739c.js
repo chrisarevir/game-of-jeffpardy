@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "89194375d0e3dd7397a333c8ac40eb1d",
+    "revision": "cbace6b9cb2b896d44f8df9954e052ac",
     "url": "/game-of-jeffpardy/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/game-of-jeffpardy/static/css/2.c726b981.chunk.css"
   },
   {
-    "revision": "df9f7e445e1f463cd6fc",
+    "revision": "e226d1d9f0e2d682a953",
     "url": "/game-of-jeffpardy/static/css/main.0388ebee.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/game-of-jeffpardy/static/js/2.5af964bc.chunk.js"
   },
   {
-    "revision": "df9f7e445e1f463cd6fc",
-    "url": "/game-of-jeffpardy/static/js/main.e42e47b5.chunk.js"
+    "revision": "e226d1d9f0e2d682a953",
+    "url": "/game-of-jeffpardy/static/js/main.5155b9ec.chunk.js"
   },
   {
     "revision": "6753c0b1687bd3934ceb",
