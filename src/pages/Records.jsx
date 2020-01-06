@@ -21,7 +21,7 @@ const Column = styled.div`
   width: 100%;
 `;
 
-const scoreSorter = (a, b) => b.totalScore - a.totalScore;
+const scoreSorter = (a, b) => b.total_score - a.total_score;
 
 const ScoreBody = ({ records }) => {
   const ordered = records.sort(scoreSorter);
