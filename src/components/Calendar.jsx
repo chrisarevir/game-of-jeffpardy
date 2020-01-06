@@ -233,7 +233,9 @@ const Calendar = ({
     <>
       {modalVisibility && (
         <Dialog onClickOutside={() => onClickShim()} rounded>
-          <Container title={clueAndResponse.clue.category.toString()}>
+          <Container
+            title={`${clueAndResponse.clue.category} - ${clueAndResponse.clue.value}`}
+          >
             <div
               style={{
                 display: "flex",
@@ -247,7 +249,7 @@ const Calendar = ({
                   <div
                     style={{
                       display: "inline-block",
-                      paddingTop: "3rem",
+                      paddingTop: "2rem",
                       textAlign: "center"
                     }}
                   >
@@ -264,7 +266,7 @@ const Calendar = ({
                       </Text>{" "}
                       points.
                     </div>
-                    <div style={{ paddingBottom: "1rem" }}>
+                    <div style={{ paddingBottom: "2rem" }}>
                       You can wager up to{" "}
                       <Text variant="primary">{possibleWager}</Text> points.
                     </div>
@@ -284,7 +286,7 @@ const Calendar = ({
                       <div
                         style={{
                           display: "inline-block",
-                          paddingTop: "3rem",
+                          paddingTop: "2rem",
                           textAlign: "center"
                         }}
                       >
