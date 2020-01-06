@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/game-of-jeffpardy/precache-manifest.c7de80e995c616d8f5f051d90a1bbcc1.js"
+  "/game-of-jeffpardy/precache-manifest.f5225359eef8eb01f1cdf42f46e97473.js"
 );
 
 self.addEventListener('message', (event) => {
