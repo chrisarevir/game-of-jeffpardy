@@ -123,6 +123,7 @@ const Calendar = ({
   const [incorrect, setIncorrect] = React.useState(false);
   const [lookupDate, setLookupDate] = React.useState("");
   const [wager, setWager] = React.useState(0);
+  const [invalidWagerFlag, setInvalidWagerFlag] = React.useState(false);
 
   const handleKeydown = evt => {
     if (evt.keyCode === 27 && modalVisibility) {
@@ -160,18 +161,29 @@ const Calendar = ({
     });
   };
 
-  const onValidateFinalJeopardyWager = wager => {
-    const isWithinTotalScoreRange = wager <= record.total_score;
+  const validateFinalJeopardyWager = wager => {
+    if (wager < 0) {
+      return false;
+    }
 
-    // let them wager 1000 if under 1000 or 0 or negative
-    // if (!isWithinTotalScoreRange && record.total_score <= 1000 && wager <= 1000)
-    // const isValidFinalJeopardyWager = isWithinTotalScoreRange ||
+    const isWithinAcceptableRange =
+      record.total_score > 1000 ? wager <= record.total_score : wager <= 1000;
+
+    return isWithinAcceptableRange;
   };
 
   const onSetFinalJeopardyWager = () => {
+    setInvalidWagerFlag(false);
     const wagerInput = document.getElementById("final_jeopardy_wager_input");
     const wagerValue = parseInt(wagerInput.value, 10);
-    setWager(wagerValue);
+
+    const isValidWager = validateFinalJeopardyWager(wagerValue);
+
+    if (isValidWager) {
+      setWager(wagerValue);
+    } else {
+      setInvalidWagerFlag(true);
+    }
   };
 
   const onSubmitResponse = firebase => {
@@ -287,6 +299,13 @@ const Calendar = ({
                     <Button onClick={onSetFinalJeopardyWager} variant="warning">
                       Wager
                     </Button>
+                    <div>
+                      {invalidWagerFlag && (
+                        <Text variant="error">
+                          Your wager cannot be negative!
+                        </Text>
+                      )}
+                    </div>
                   </div>
                 )}
               {!scoreForSelectedDate &&
