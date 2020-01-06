@@ -350,6 +350,11 @@ const Calendar = ({
                 <div style={{ margin: "auto", paddingTop: "1rem" }}>
                   <Text variant={answeredCorrectly ? "success" : "error"}>
                     {clueAndResponse.response.question}
+                    {clueAndResponse.response.alternative_questions && (
+                      <div style={{ display: "block", textAlign: "center" }}>
+                        ({clueAndResponse.response.alternative_questions})
+                      </div>
+                    )}
                   </Text>
                 </div>
               )}
