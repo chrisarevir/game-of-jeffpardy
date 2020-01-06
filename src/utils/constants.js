@@ -1,5 +1,3 @@
-import { database } from "firebase";
-
 export const defaultRecord = {
   "2019-12-01": "",
   "2019-12-02": "",
