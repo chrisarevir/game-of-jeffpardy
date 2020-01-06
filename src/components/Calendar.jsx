@@ -197,14 +197,10 @@ const Calendar = ({
       setRecord(record);
       setWager(0);
 
-      firebase.updatePlayerRecord(record, currentUser.uid).then(response => {
-        setTimeout(() => setModalVisibility(false), 500);
-      });
+      firebase.updatePlayerRecord(record, currentUser.uid);
     } else if (responseValue === "frogs" || responseValue === "Frogs") {
       window.location.hash = "#/frogs";
     } else {
-      //TODO: account for negative points after losing a wager
-      // const pointsLost = wager !== 0 ? wager : 0;
       const pointsLost = 0 - wager;
       record.scores.push({
         [lookupDate]: pointsLost
@@ -214,9 +210,7 @@ const Calendar = ({
       setRecord(record);
       setWager(0);
       setIncorrect(true);
-      firebase.updatePlayerRecord(record, currentUser.uid).then(response => {
-        setTimeout(() => setModalVisibility(false), 500);
-      });
+      firebase.updatePlayerRecord(record, currentUser.uid);
     }
   };
 
