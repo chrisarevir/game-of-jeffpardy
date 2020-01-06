@@ -176,9 +176,17 @@ const Calendar = ({
     const pointValue = clueAndResponse.clue.value;
     const correctResponse = clueAndResponse.response.question.toLowerCase();
 
-    if (responseValue === correctResponse) {
+    const alternativeCorrectResponses = clueAndResponse.response.alternative_questions.toLowerCase();
+    const isAlternativeCorrectResponse = alternativeCorrectResponses.includes(
+      responseValue
+    );
+
+    const isCorrectResponse =
+      responseValue === correctResponse || isAlternativeCorrectResponse;
+
+    if (isCorrectResponse) {
       setCorrect(true);
-      const points = wager !== 0 ? wager * 2 : pointValue;
+      const points = wager !== 0 ? wager : pointValue;
 
       record.scores.push({
         [lookupDate]: points
