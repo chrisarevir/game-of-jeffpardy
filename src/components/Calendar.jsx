@@ -337,7 +337,7 @@ const Calendar = ({
         />
       </Table>
       <div style={{ paddingTop: "1rem" }}>
-        Monthly total: <Icon icon="coin" /> {record.totalScore}
+        Monthly total: <Icon icon="coin" /> {record.total_score}
       </div>
     </>
   );
