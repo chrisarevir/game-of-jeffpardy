@@ -21,7 +21,10 @@ import Text from "../components/Text";
 import Icon from "../components/Icon";
 import Container from "../components/Container";
 
-import { defaultClueAndResponse } from "../utils/constants";
+import {
+  defaultClueAndResponse,
+  INVALID_WAGER_TYPES
+} from "../utils/constants";
 
 export const getDayOfWeekLabel = day => {
   return format(addDays(startOfWeek(new Date()), day), "EEEEEE");
@@ -123,7 +126,7 @@ const Calendar = ({
   const [incorrect, setIncorrect] = React.useState(false);
   const [lookupDate, setLookupDate] = React.useState("");
   const [wager, setWager] = React.useState(0);
-  const [invalidWagerFlag, setInvalidWagerFlag] = React.useState(false);
+  const [invalidWagerFlag, setInvalidWagerFlag] = React.useState({ type: "" });
 
   const handleKeydown = evt => {
     if (evt.keyCode === 27 && modalVisibility) {
@@ -163,26 +166,36 @@ const Calendar = ({
 
   const validateFinalJeopardyWager = wager => {
     if (wager < 0) {
-      return false;
+      return "negative";
     }
 
     const isWithinAcceptableRange =
       record.total_score > 1000 ? wager <= record.total_score : wager <= 1000;
 
-    return isWithinAcceptableRange;
+    if (isWithinAcceptableRange) {
+      return "";
+    } else if (wager > record.total_score && record.total_score > 1000) {
+      return "too_high";
+    } else {
+      return "not_a_number";
+    }
   };
 
   const onSetFinalJeopardyWager = () => {
-    setInvalidWagerFlag(false);
+    setInvalidWagerFlag({
+      type: ""
+    });
     const wagerInput = document.getElementById("final_jeopardy_wager_input");
     const wagerValue = parseInt(wagerInput.value, 10);
 
-    const isValidWager = validateFinalJeopardyWager(wagerValue);
+    const wagerType = validateFinalJeopardyWager(wagerValue);
 
-    if (isValidWager) {
+    if (!wagerType) {
       setWager(wagerValue);
     } else {
-      setInvalidWagerFlag(true);
+      setInvalidWagerFlag({
+        type: wagerType
+      });
     }
   };
 
@@ -300,9 +313,9 @@ const Calendar = ({
                       Wager
                     </Button>
                     <div>
-                      {invalidWagerFlag && (
+                      {invalidWagerFlag.type && (
                         <Text variant="error">
-                          Your wager cannot be negative!
+                          {INVALID_WAGER_TYPES[invalidWagerFlag.type]}
                         </Text>
                       )}
                     </div>

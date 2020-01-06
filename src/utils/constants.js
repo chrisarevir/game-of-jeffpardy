@@ -56,3 +56,9 @@ export const getResponseData = () => {
 
   return responses;
 };
+
+export const INVALID_WAGER_TYPES = {
+  negative: "Your wager cannot be negative!",
+  not_a_number: "Your wager must be a number!",
+  too_high: "Your wager is too high!"
+};
