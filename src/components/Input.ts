@@ -7,7 +7,7 @@ interface InputProps {
   variant?: InputVariant;
 }
 
-const Input = styled.input.attrs({ type: "text" })<InputProps>`
+const Input = styled.input<InputProps>`
   background-clip: padding-box;
   border-image-outset: 2;
   border-image-repeat: stretch;

@@ -29,7 +29,7 @@ const SignIn = ({ setUser }) => {
         <Container title="Sign In">
           <div style={{ maxWidth: "300px", marginBottom: "16px" }}>
             Email <Input id="email_input" />
-            Password <Input id="password_input" />
+            Password <Input id="password_input" type="password" />
           </div>
           <Button onClick={() => onSignIn(firebase)} variant="primary">
             Submit
