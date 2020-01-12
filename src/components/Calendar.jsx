@@ -8,7 +8,7 @@ import {
   startOfMonth,
   startOfWeek
 } from "date-fns";
-import { range, splitEvery, trim } from "ramda";
+import { range, splitEvery } from "ramda";
 import React from "react";
 
 import { FirebaseContext } from "../components/Firebase";
@@ -188,6 +188,7 @@ const Calendar = ({
     setInvalidWagerFlag({
       type: ""
     });
+
     const wagerInput = document.getElementById("final_jeopardy_wager_input");
     const wagerValue = parseInt(wagerInput.value, 10);
 
