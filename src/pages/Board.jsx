@@ -1,8 +1,8 @@
 import React from "react";
-import Container from "../components/Container";
-import Calendar from "../components/Calendar";
+import { Container } from "nes-react";
 
 import { FirebaseContext } from "../components/Firebase";
+import Calendar from "../components/Calendar";
 
 const Board = ({ currentUser, record, setRecord }) => (
   <FirebaseContext.Consumer>
@@ -16,7 +16,7 @@ const Board = ({ currentUser, record, setRecord }) => (
       return (
         record &&
         record.user_id && (
-          <Container title="January">
+          <Container title="January" rounded>
             <Calendar
               currentUser={currentUser}
               record={record}

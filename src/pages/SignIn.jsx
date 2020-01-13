@@ -1,7 +1,6 @@
 import React from "react";
-import Container from "../components/Container";
-import Input from "../components/Input";
-import Button from "../components/Button";
+
+import { Container, TextInput, Button } from "nes-react";
 
 import { FirebaseContext } from "../components/Firebase";
 
@@ -26,16 +25,16 @@ const SignIn = ({ setUser }) => {
   return (
     <FirebaseContext.Consumer>
       {firebase => (
-        <Container title="Sign In">
+        <Container title="Sign In" rounded>
           <div style={{ maxWidth: "300px", marginBottom: "16px" }}>
-            Email <Input id="email_input" />
-            Password <Input id="password_input" type="password" />
+            Email <TextInput id="email_input" />
+            Password <TextInput id="password_input" type="password" />
           </div>
-          <Button onClick={() => onSignIn(firebase)} variant="primary">
+          <Button onClick={() => onSignIn(firebase)} primary>
             Submit
           </Button>
           <span style={{ marginLeft: "1rem" }}>
-            <Button onClick={() => onRedirectToSignUp()} variant="warning">
+            <Button onClick={() => onRedirectToSignUp()} warning>
               Sign Up
             </Button>
           </span>

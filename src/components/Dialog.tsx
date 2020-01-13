@@ -14,17 +14,17 @@ const Dialog = styled.section<DialogProps>`
   display: flex;
   margin-left: 10%;
   margin-right: 10%;
-  margin-top: 20vh;
-  max-height: 80vh;
+  margin-top: 10vh;
+  /* max-height: 80vh; */
   max-width: 700px;
   padding: 1.5rem 2rem;
   position: absolute;
   z-index: 2;
 
-  input {
+  /* input {
     margin-right: 1rem;
     max-width: 75%;
-  }
+  } */
 
   ${({ rounded }) =>
     rounded &&
