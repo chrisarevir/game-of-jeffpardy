@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import Container from "../components/Container";
+
 import Text from "../components/Text";
+
+import { Container, Table } from "nes-react";
 import Icon from "../components/Icon";
-import Table from "../components/Table";
 
 import { FirebaseContext } from "../components/Firebase";
 
@@ -34,7 +35,7 @@ const ScoreBody = ({ records }) => {
             <td>{`${index + 1}`}.</td>
             <td>{record.name}</td>
             <td>
-              <Icon icon="coin" />
+              <Icon icon="coin" small />
               <Text style={{ marginLeft: "4px" }}>{record.total_score}</Text>
             </td>
           </tr>
@@ -58,7 +59,7 @@ const Records = ({ currentUser, record, records, setRecord }) => {
           record &&
           record.user_id && (
             <>
-              <Container title="Personal">
+              <Container title="Personal" rounded>
                 <Column>
                   <Row>
                     <Text variant="success">Congratulations!</Text>
@@ -70,7 +71,7 @@ const Records = ({ currentUser, record, records, setRecord }) => {
                   <Row style={{ marginTop: "24px" }}>
                     Your Score:
                     <Text>
-                      <Icon icon="coin" />
+                      <Icon icon="coin" small />
                       <Text style={{ marginLeft: "4px" }}>
                         {record.total_score}
                       </Text>
@@ -78,7 +79,8 @@ const Records = ({ currentUser, record, records, setRecord }) => {
                   </Row>
                 </Column>
               </Container>
-              <Container title="High Scores">
+
+              <Container title="High Scores" rounded>
                 <Table style={{ width: "100%" }} bordered centered>
                   <thead>
                     <tr>

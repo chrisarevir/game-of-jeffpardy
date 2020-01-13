@@ -1,3 +1,5 @@
+import React from "react";
+
 import {
   addDays,
   format,
@@ -8,18 +10,15 @@ import {
   startOfMonth,
   startOfWeek
 } from "date-fns";
+import { Button, Container, Table, TextInput } from "nes-react";
 import { range, splitEvery } from "ramda";
-import React from "react";
 
 import { FirebaseContext } from "../components/Firebase";
 
-import Button from "../components/Button";
 import Dialog from "../components/Dialog";
-import Input from "../components/Input";
-import Table from "../components/Table";
+
 import Text from "../components/Text";
 import Icon from "../components/Icon";
-import Container from "../components/Container";
 
 import {
   defaultClueAndResponse,
@@ -347,11 +346,11 @@ const Calendar = ({
                       You can wager up to{" "}
                       <Text variant="primary">{possibleWager}</Text> points.
                     </div>
-                    <Input
+                    <TextInput
                       id="final_jeopardy_wager_input"
-                      style={{ marginBottom: "1.5rem", maxWidth: "10rem" }}
+                      style={{ marginBottom: "1.5rem" }}
                     />
-                    <Button onClick={onSetFinalJeopardyWager} variant="warning">
+                    <Button onClick={onSetFinalJeopardyWager} warning>
                       Wager
                     </Button>
                     <div>
@@ -379,13 +378,13 @@ const Calendar = ({
                             Your wager: <Text variant="primary">{wager}</Text>
                           </div>
                         )}
-                        <Input
+                        <TextInput
                           id="response_input"
                           style={{ marginBottom: "1.5rem" }}
                         />
                         <Button
                           onClick={() => onSubmitResponse(firebase)}
-                          variant="primary"
+                          primary
                         >
                           Submit
                         </Button>
@@ -424,7 +423,8 @@ const Calendar = ({
           </Container>
         </Dialog>
       )}
-      <Table bordered dark centered style={{ width: "100%" }}>
+
+      <Table bordered centered className="clickable-table" dark>
         <Weekdays />
         <MonthBody
           viewDate={viewDate}
@@ -432,6 +432,7 @@ const Calendar = ({
           record={record}
         />
       </Table>
+
       <div style={{ paddingTop: "1rem" }}>
         Monthly total: <Icon icon="coin" /> {record.total_score}
       </div>

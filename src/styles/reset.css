@@ -298,6 +298,7 @@ body {
 label {
   cursor: inherit;
 }
+
 a {
   text-decoration: none;
 }
@@ -322,6 +323,7 @@ input[type="checkbox"],
 input[type="radio"] {
   outline: 0;
 }
+
 @keyframes blink {
   0% {
     opacity: 1;

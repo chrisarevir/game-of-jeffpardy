@@ -1,7 +1,6 @@
 import React from "react";
-import Container from "../components/Container";
-import Input from "../components/Input";
-import Button from "../components/Button";
+
+import { Container, TextInput, Button } from "nes-react";
 
 import { defaultPlayerRecord } from "../utils/constants";
 import { FirebaseContext } from "../components/Firebase";
@@ -52,17 +51,18 @@ const SignUp = ({ setUser }) => {
   return (
     <FirebaseContext.Consumer>
       {firebase => (
-        <Container title="Sign Up">
+        <Container title="Sign Up" rounded>
           <div style={{ maxWidth: "300px", marginBottom: "16px" }}>
-            Email <Input id="email_input" />
-            Username <Input id="username_input" />
-            Password <Input id="password_input" />
-            Confirm Password <Input id="confirm_password_input" />
+            Email
+            <TextInput id="email_input" />
+            Username
+            <TextInput id="username_input" />
+            Password
+            <TextInput id="password_input" type="password" />
+            Confirm Password
+            <TextInput id="confirm_password_input" type="password" />
           </div>
-          <Button
-            onClick={() => onSubmitCredentials(firebase)}
-            variant="primary"
-          >
+          <Button onClick={() => onSubmitCredentials(firebase)} primary>
             Sign Up
           </Button>
           {firebaseError.message && (
