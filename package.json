@@ -8,7 +8,7 @@
     "@types/node": "12.12.24",
     "@types/react": "16.9.17",
     "@types/react-dom": "16.9.4",
-    "antd": "3.26.6",
+    "antd": "3.26.7",
     "date-fns": "2.9.0",
     "firebase": "7.6.2",
     "nes-react": "1.0.2",
