@@ -49,6 +49,25 @@ const Weekdays = () => {
   );
 };
 
+// (day: number, isClickable: boolean, record: RecordObject, viewDate: Date) => string
+const getDayCellFormat = ({ day, isClickable, record, viewDate }) => {
+  const today = new Date(viewDate).setDate(day);
+
+  const formattedToday = today.toISOString().split("T")[0];
+  const alreadyAnswered =
+    record && record.scores && record.scores[formattedToday];
+
+  if (alreadyAnswered) {
+    return "primary";
+  }
+
+  if (isClickable) {
+    return "question";
+  }
+
+  return "disabled";
+};
+
 const MonthBody = ({ viewDate, onDayClick, record }) => {
   const daysInMonth = getDaysInMonth(viewDate);
   const weeksInMonth = getWeeksInMonth(viewDate);
@@ -76,14 +95,6 @@ const MonthBody = ({ viewDate, onDayClick, record }) => {
         <tr key={`week-${index + 1}`}>
           {row.map((day, dayIndex) => {
             const hasQuestion = Boolean(day);
-            const formattedDay = day < 10 ? `0${day}` : day;
-            let dailyRecord = "";
-
-            if (day > 0) {
-              dailyRecord = record[`2019-12-${formattedDay}`];
-            }
-
-            const hasDailyRecord = dailyRecord !== "";
             const today = getDate(viewDate);
             const isClickable = hasQuestion && day <= today;
 
@@ -93,12 +104,17 @@ const MonthBody = ({ viewDate, onDayClick, record }) => {
                   <td
                     key={`day-${day}-${dayIndex}`}
                     onClick={
-                      isClickable
-                        ? e => onDayClick(e, firebase, hasDailyRecord)
-                        : undefined
+                      isClickable ? e => onDayClick(e, firebase) : undefined
                     }
                   >
-                    <Text variant={isClickable ? "primary" : "disabled"}>
+                    <Text
+                      variant={getDayCellFormat({
+                        isClickable,
+                        record,
+                        today,
+                        viewDate
+                      })}
+                    >
                       {hasQuestion ? day : ""}
                     </Text>
                   </td>
