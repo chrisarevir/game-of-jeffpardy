@@ -37,7 +37,8 @@ const Table = styled.table<TableProps>`
     border-style: solid;
     border-width: 0 0.25em 0.25em 0;
     text-align: center;
-    height: 100px;
+    /* height: 100px; */
+    /* height: 100%; */
 
     &:last-child {
       border-right-width: 0;
@@ -54,7 +55,7 @@ const Table = styled.table<TableProps>`
       display: block;
       /* width: 0.25em; */
       /* height: 0.25em; */
-      height: 100px;
+      /* height: 100px; */
       content: "";
       background-color: #212529;
     }

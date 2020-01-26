@@ -4,7 +4,9 @@ import {
   getDate,
   getDay,
   getDaysInMonth,
+  getMonth,
   getWeeksInMonth,
+  getYear,
   startOfMonth,
   startOfWeek
 } from "date-fns";
@@ -114,6 +116,7 @@ const MonthBody = ({ viewDate, onDayClick, record }) => {
 const Calendar = ({
   currentUser,
   record,
+  setMonthTitle,
   setRecord,
   selectedDate = new Date()
 }) => {
@@ -131,6 +134,12 @@ const Calendar = ({
     false
   );
 
+  const todayMonthKey = getMonth(selectedDate);
+  const [viewDate, setViewDate] = React.useState(selectedDate);
+  const [currentMonthKey, setCurrentMonthKey] = React.useState(todayMonthKey);
+
+  const currentYear = getYear(new Date());
+
   const handleKeydown = evt => {
     if (evt.keyCode === 27 && modalVisibility) {
       setModalVisibility(false);
@@ -139,7 +148,29 @@ const Calendar = ({
 
   document.addEventListener("keydown", evt => handleKeydown(evt), false);
 
-  const viewDate = selectedDate;
+  const onIncrementMonth = () => {
+    const updatedMonthKey = currentMonthKey + 1;
+    setCurrentMonthKey(updatedMonthKey);
+
+    const updatedViewDate = new Date(currentYear, updatedMonthKey);
+    setViewDate(updatedViewDate);
+
+    const monthName = format(updatedViewDate, "MMMM");
+    // not working?
+    setMonthTitle(monthName);
+  };
+
+  // TODO: If you go January --> Febraury, then back to January, you can no longer click
+  // the available days
+  // You can also click the 1st day of any month for some reason
+  // ------------------------------------------------------------------
+  // don't let go before January 2020 or after December 2020 yet
+  // ------------------------------------------------------------------
+  const onDecrementMonth = () => {
+    const updatedMonthKey = currentMonthKey - 1;
+    setCurrentMonthKey(updatedMonthKey);
+    setViewDate(new Date(currentYear, updatedMonthKey));
+  };
 
   const onDayClick = (e, firebase) => {
     setCorrect(false);
@@ -424,14 +455,43 @@ const Calendar = ({
           </Container>
         </Dialog>
       )}
-      <Table bordered dark centered style={{ width: "100%" }}>
-        <Weekdays />
-        <MonthBody
-          viewDate={viewDate}
-          onDayClick={onDayClick}
-          record={record}
-        />
-      </Table>
+      <div style={{ textAlign: "center", width: "800px" }}>
+        <span
+          onClick={() => onDecrementMonth()}
+          style={{ display: "inline-block", verticalAlign: "middle" }}
+        >
+          L
+        </span>
+        <div
+          style={{
+            display: "inline-block",
+            maxHeight: "500px",
+            maxWidth: "700px",
+            overflow: "hidden",
+            padding: "4px"
+          }}
+        >
+          <Table
+            bordered
+            dark
+            centered
+            style={{ height: "100%", width: "100%" }}
+          >
+            <Weekdays />
+            <MonthBody
+              viewDate={viewDate}
+              onDayClick={onDayClick}
+              record={record}
+            />
+          </Table>
+        </div>
+        <span
+          onClick={() => onIncrementMonth()}
+          style={{ display: "inline-block", verticalAlign: "middle" }}
+        >
+          R
+        </span>
+      </div>
       <div style={{ paddingTop: "1rem" }}>
         Monthly total: <Icon icon="coin" /> {record.total_score}
       </div>
