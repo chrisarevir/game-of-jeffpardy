@@ -1,7 +1,7 @@
 import React from "react";
+
+import { Container, Button } from "nes-react";
 import { format } from "date-fns";
-import Container from "../components/Container";
-import Button from "../components/Button";
 
 import { FirebaseContext } from "../components/Firebase";
 import { getClueData, getResponseData } from "../utils/constants";
@@ -25,8 +25,8 @@ const Admin = () => {
   return (
     <FirebaseContext.Consumer>
       {firebase => (
-        <Container title="Admin">
-          <Button onClick={() => populateDb(firebase)} variant="warning">
+        <Container title="Admin" rounded>
+          <Button onClick={() => populateDb(firebase)} warning>
             Populate DB
           </Button>
         </Container>
