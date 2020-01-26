@@ -15,21 +15,22 @@ const Board = ({ currentUser, record, setRecord }) => {
             .then(currentRecord => setRecord(currentRecord));
         }
 
-      return (
-        record &&
-        record.user_id && (
-          <Container title="January" rounded>
-            <Calendar
-              currentUser={currentUser}
-              record={record}
-              setMonthTitle={setMonthTitle}
-              setRecord={setRecord}
-            />
-          </Container>
-        )
-      );
-    }}
-  </FirebaseContext.Consumer>
-);
+        return (
+          record &&
+          record.user_id && (
+            <Container title="January" rounded>
+              <Calendar
+                currentUser={currentUser}
+                record={record}
+                setMonthTitle={setMonthTitle}
+                setRecord={setRecord}
+              />
+            </Container>
+          )
+        );
+      }}
+    </FirebaseContext.Consumer>
+  );
+};
 
 export default Board;
