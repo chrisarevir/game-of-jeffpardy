@@ -18,7 +18,7 @@ const Board = ({ currentUser, record, setRecord }) => {
         return (
           record &&
           record.user_id && (
-            <Container title="January" rounded>
+            <Container title={monthTitle} rounded>
               <Calendar
                 currentUser={currentUser}
                 record={record}

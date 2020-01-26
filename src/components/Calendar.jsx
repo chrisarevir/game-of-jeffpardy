@@ -154,6 +154,7 @@ const Calendar = ({
   const [currentMonthKey, setCurrentMonthKey] = React.useState(todayMonthKey);
 
   const currentYear = getYear(new Date());
+  const currentMonth = getMonth(new Date());
 
   const handleKeydown = evt => {
     if (evt.keyCode === 27 && modalVisibility) {
@@ -171,20 +172,22 @@ const Calendar = ({
     setViewDate(updatedViewDate);
 
     const monthName = format(updatedViewDate, "MMMM");
-    // not working?
     setMonthTitle(monthName);
   };
 
-  // TODO: If you go January --> Febraury, then back to January, you can no longer click
-  // the available days
-  // You can also click the 1st day of any month for some reason
-  // ------------------------------------------------------------------
-  // don't let go before January 2020 or after December 2020 yet
-  // ------------------------------------------------------------------
   const onDecrementMonth = () => {
     const updatedMonthKey = currentMonthKey - 1;
     setCurrentMonthKey(updatedMonthKey);
-    setViewDate(new Date(currentYear, updatedMonthKey));
+
+    const updatedViewDate =
+      currentMonth === updatedMonthKey
+        ? new Date()
+        : new Date(currentYear, updatedMonthKey);
+
+    setViewDate(updatedViewDate);
+
+    const monthName = format(updatedViewDate, "MMMM");
+    setMonthTitle(monthName);
   };
 
   const onDayClick = (e, firebase) => {
