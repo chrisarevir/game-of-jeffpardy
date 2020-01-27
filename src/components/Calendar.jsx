@@ -497,7 +497,7 @@ const Calendar = ({
           onClick={() => onDecrementMonth()}
           style={{ display: "table-cell", verticalAlign: "middle" }}
         >
-          <Arrow direction="left" />
+          <Arrow direction="left" disabled={currentMonthKey === 0} />
         </span>
         <div
           style={{
@@ -520,7 +520,10 @@ const Calendar = ({
           onClick={() => onIncrementMonth()}
           style={{ display: "table-cell", verticalAlign: "middle" }}
         >
-          <Arrow direction="right" />
+          <Arrow
+            direction="right"
+            disabled={currentMonthKey === currentMonth}
+          />
         </span>
       </div>
       <div style={{ marginLeft: "3rem", paddingTop: "1rem" }}>

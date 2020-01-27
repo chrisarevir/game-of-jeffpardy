@@ -1,22 +1,22 @@
 import React from "react";
 
-const Arrow = ({ direction }) => {
+const Arrow = ({ direction, disabled = false }) => {
   const scaleValue = direction === "right" ? "" : "scale(-1, 1)";
 
   return (
     <svg
-      version="1.1"
+      height="42px"
       id="Capa_1"
-      xmlns="http://www.w3.org/2000/svg"
+      space="preserve"
+      transform={scaleValue}
+      version="1.1"
+      viewBox="0 0 46 46"
+      width="42px"
+      fill={disabled ? "lightgray" : "black"}
       xlink="http://www.w3.org/1999/xlink"
+      xmlns="http://www.w3.org/2000/svg"
       x="0px"
       y="0px"
-      width="42px"
-      height="42px"
-      viewBox="0 0 46 46"
-      transform={scaleValue}
-      style={{ enableBackground: "new 0 0 42 42" }}
-      space="preserve"
     >
       <g>
         <g>
