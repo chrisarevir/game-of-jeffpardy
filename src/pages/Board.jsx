@@ -1,11 +1,20 @@
 import React from "react";
 import { Container } from "nes-react";
+import { format as formatter } from "date-fns";
 
 import { FirebaseContext } from "../components/Firebase";
 import Calendar from "../components/Calendar";
 
 const Board = ({ currentUser, record, setRecord }) => {
-  const [monthTitle, setMonthTitle] = React.useState("January");
+  const [monthTitle, setMonthTitle] = React.useState("");
+
+  React.useEffect(() => {
+    const thisMonthDate = new Date();
+    const monthString = formatter(thisMonthDate, "LLLL");
+
+    setMonthTitle(monthString);
+  }, []);
+
   return (
     <FirebaseContext.Consumer>
       {firebase => {
