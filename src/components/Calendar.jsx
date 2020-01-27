@@ -14,13 +14,14 @@ import {
 } from "date-fns";
 import { Button, Container, Table, TextInput } from "nes-react";
 import { range, splitEvery } from "ramda";
+import { setDate } from "date-fns";
 
 import { FirebaseContext } from "../components/Firebase";
 
 import Dialog from "../components/Dialog";
-
-import Text from "../components/Text";
 import Icon from "../components/Icon";
+import normalizeDate from "../utils/normalizeDate";
+import Text from "../components/Text";
 
 import {
   defaultClueAndResponse,
@@ -49,13 +50,20 @@ const Weekdays = () => {
   );
 };
 
-// (day: number, isClickable: boolean, record: RecordObject, viewDate: Date) => string
-const getDayCellFormat = ({ day, isClickable, record, viewDate }) => {
-  const today = new Date(viewDate).setDate(day);
+// (day: number, isClickable: boolean, scores: Array<{ [yyyy-MM-dd]: number }>, viewDate: Date) => string
+const getDayCellFormat = ({ day, isClickable, scores, viewDate }) => {
+  const viewDay = normalizeDate(
+    viewDate.getFullYear(),
+    viewDate.getMonth(),
+    viewDate.getDate()
+  );
+  const today = setDate(viewDay, day);
 
   const formattedToday = today.toISOString().split("T")[0];
-  const alreadyAnswered =
-    record && record.scores && record.scores[formattedToday];
+
+  const alreadyAnswered = scores.some(
+    score => typeof score[formattedToday] === "number"
+  );
 
   if (alreadyAnswered) {
     return "primary";
@@ -109,9 +117,9 @@ const MonthBody = ({ viewDate, onDayClick, record }) => {
                   >
                     <Text
                       variant={getDayCellFormat({
+                        day,
                         isClickable,
-                        record,
-                        today,
+                        scores: record.scores,
                         viewDate
                       })}
                     >
