@@ -176,6 +176,11 @@ const Calendar = ({
 
   const onIncrementMonth = () => {
     const updatedMonthKey = currentMonthKey + 1;
+
+    if (updatedMonthKey > currentMonth) {
+      return;
+    }
+
     setCurrentMonthKey(updatedMonthKey);
 
     const updatedViewDate = new Date(currentYear, updatedMonthKey);
