@@ -162,6 +162,10 @@ const Calendar = ({
   };
 
   const onDecrementMonth = () => {
+    if (currentMonthKey === 0) {
+      return;
+    }
+
     const updatedMonthKey = currentMonthKey - 1;
     setCurrentMonthKey(updatedMonthKey);
 
