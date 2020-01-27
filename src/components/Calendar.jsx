@@ -15,6 +15,8 @@ import {
 import { Button, Container, Table, TextInput } from "nes-react";
 import { range, splitEvery } from "ramda";
 
+import Arrow from "../assets/Arrow.jsx";
+
 import { FirebaseContext } from "../components/Firebase";
 
 import Dialog from "../components/Dialog";
@@ -457,16 +459,16 @@ const Calendar = ({
           </Container>
         </Dialog>
       )}
-      <div style={{ textAlign: "center", width: "800px" }}>
+      <div style={{ display: "table", textAlign: "center", width: "800px" }}>
         <span
           onClick={() => onDecrementMonth()}
-          style={{ display: "inline-block", verticalAlign: "middle" }}
+          style={{ display: "table-cell", verticalAlign: "middle" }}
         >
-          L
+          <Arrow direction="left" />
         </span>
         <div
           style={{
-            display: "inline-block",
+            display: "table-cell",
             maxHeight: "500px",
             maxWidth: "700px",
             overflow: "hidden",
@@ -484,9 +486,9 @@ const Calendar = ({
         </div>
         <span
           onClick={() => onIncrementMonth()}
-          style={{ display: "inline-block", verticalAlign: "middle" }}
+          style={{ display: "table-cell", verticalAlign: "middle" }}
         >
-          R
+          <Arrow direction="right" />
         </span>
       </div>
       <div style={{ paddingTop: "1rem" }}>
