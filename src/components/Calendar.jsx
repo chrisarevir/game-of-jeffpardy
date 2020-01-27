@@ -523,7 +523,7 @@ const Calendar = ({
           <Arrow direction="right" />
         </span>
       </div>
-      <div style={{ paddingTop: "1rem" }}>
+      <div style={{ marginLeft: "3rem", paddingTop: "1rem" }}>
         Monthly total: <Icon icon="coin" /> {record.total_score}
       </div>
     </>
