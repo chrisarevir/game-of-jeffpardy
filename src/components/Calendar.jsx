@@ -6,19 +6,24 @@ import {
   getDate,
   getDay,
   getDaysInMonth,
+  getMonth,
   getWeeksInMonth,
+  getYear,
   startOfMonth,
   startOfWeek
 } from "date-fns";
 import { Button, Container, Table, TextInput } from "nes-react";
 import { range, splitEvery } from "ramda";
+import { setDate } from "date-fns";
+
+import Arrow from "../assets/Arrow.jsx";
 
 import { FirebaseContext } from "../components/Firebase";
 
 import Dialog from "../components/Dialog";
-
-import Text from "../components/Text";
 import Icon from "../components/Icon";
+import normalizeDate from "../utils/normalizeDate";
+import Text from "../components/Text";
 
 import {
   defaultClueAndResponse,
@@ -45,6 +50,32 @@ const Weekdays = () => {
       </tr>
     </thead>
   );
+};
+
+// (day: number, isClickable: boolean, scores: Array<{ [yyyy-MM-dd]: number }>, viewDate: Date) => string
+const getDayCellFormat = ({ day, isClickable, scores, viewDate }) => {
+  const viewDay = normalizeDate(
+    viewDate.getFullYear(),
+    viewDate.getMonth(),
+    viewDate.getDate()
+  );
+  const today = setDate(viewDay, day);
+
+  const formattedToday = today.toISOString().split("T")[0];
+
+  const alreadyAnswered = scores.some(
+    score => typeof score[formattedToday] === "number"
+  );
+
+  if (alreadyAnswered) {
+    return "primary";
+  }
+
+  if (isClickable) {
+    return "question";
+  }
+
+  return "disabled";
 };
 
 const MonthBody = ({ viewDate, onDayClick, record }) => {
@@ -74,14 +105,6 @@ const MonthBody = ({ viewDate, onDayClick, record }) => {
         <tr key={`week-${index + 1}`}>
           {row.map((day, dayIndex) => {
             const hasQuestion = Boolean(day);
-            const formattedDay = day < 10 ? `0${day}` : day;
-            let dailyRecord = "";
-
-            if (day > 0) {
-              dailyRecord = record[`2019-12-${formattedDay}`];
-            }
-
-            const hasDailyRecord = dailyRecord !== "";
             const today = getDate(viewDate);
             const isClickable = hasQuestion && day <= today;
 
@@ -91,12 +114,17 @@ const MonthBody = ({ viewDate, onDayClick, record }) => {
                   <td
                     key={`day-${day}-${dayIndex}`}
                     onClick={
-                      isClickable
-                        ? e => onDayClick(e, firebase, hasDailyRecord)
-                        : undefined
+                      isClickable ? e => onDayClick(e, firebase) : undefined
                     }
                   >
-                    <Text variant={isClickable ? "primary" : "disabled"}>
+                    <Text
+                      variant={getDayCellFormat({
+                        day,
+                        isClickable,
+                        scores: record.scores,
+                        viewDate
+                      })}
+                    >
                       {hasQuestion ? day : ""}
                     </Text>
                   </td>
@@ -113,6 +141,7 @@ const MonthBody = ({ viewDate, onDayClick, record }) => {
 const Calendar = ({
   currentUser,
   record,
+  setMonthTitle,
   setRecord,
   selectedDate = new Date()
 }) => {
@@ -130,6 +159,13 @@ const Calendar = ({
     false
   );
 
+  const todayMonthKey = getMonth(selectedDate);
+  const [viewDate, setViewDate] = React.useState(selectedDate);
+  const [currentMonthKey, setCurrentMonthKey] = React.useState(todayMonthKey);
+
+  const currentYear = getYear(new Date());
+  const currentMonth = getMonth(new Date());
+
   const handleKeydown = evt => {
     if (evt.keyCode === 27 && modalVisibility) {
       setModalVisibility(false);
@@ -138,7 +174,40 @@ const Calendar = ({
 
   document.addEventListener("keydown", evt => handleKeydown(evt), false);
 
-  const viewDate = selectedDate;
+  const onIncrementMonth = () => {
+    const updatedMonthKey = currentMonthKey + 1;
+
+    if (updatedMonthKey > currentMonth) {
+      return;
+    }
+
+    setCurrentMonthKey(updatedMonthKey);
+
+    const updatedViewDate = new Date(currentYear, updatedMonthKey);
+    setViewDate(updatedViewDate);
+
+    const monthName = format(updatedViewDate, "MMMM");
+    setMonthTitle(monthName);
+  };
+
+  const onDecrementMonth = () => {
+    if (currentMonthKey === 0) {
+      return;
+    }
+
+    const updatedMonthKey = currentMonthKey - 1;
+    setCurrentMonthKey(updatedMonthKey);
+
+    const updatedViewDate =
+      currentMonth === updatedMonthKey
+        ? new Date()
+        : new Date(currentYear, updatedMonthKey);
+
+    setViewDate(updatedViewDate);
+
+    const monthName = format(updatedViewDate, "MMMM");
+    setMonthTitle(monthName);
+  };
 
   const onDayClick = (e, firebase) => {
     setCorrect(false);
@@ -423,17 +492,41 @@ const Calendar = ({
           </Container>
         </Dialog>
       )}
-
-      <Table bordered centered className="clickable-table" dark>
-        <Weekdays />
-        <MonthBody
-          viewDate={viewDate}
-          onDayClick={onDayClick}
-          record={record}
-        />
-      </Table>
-
-      <div style={{ paddingTop: "1rem" }}>
+      <div style={{ display: "table", textAlign: "center", width: "800px" }}>
+        <span
+          onClick={onDecrementMonth}
+          style={{ display: "table-cell", verticalAlign: "middle" }}
+        >
+          <Arrow direction="left" disabled={currentMonthKey === 0} />
+        </span>
+        <div
+          style={{
+            display: "table-cell",
+            maxHeight: "500px",
+            maxWidth: "700px",
+            padding: "0 8px 0 4px"
+          }}
+        >
+          <Table bordered dark centered className="clickable-table">
+            <Weekdays />
+            <MonthBody
+              viewDate={viewDate}
+              onDayClick={onDayClick}
+              record={record}
+            />
+          </Table>
+        </div>
+        <span
+          onClick={onIncrementMonth}
+          style={{ display: "table-cell", verticalAlign: "middle" }}
+        >
+          <Arrow
+            direction="right"
+            disabled={currentMonthKey === currentMonth}
+          />
+        </span>
+      </div>
+      <div style={{ marginLeft: "3rem", paddingTop: "1rem" }}>
         Monthly total: <Icon icon="coin" /> {record.total_score}
       </div>
     </>

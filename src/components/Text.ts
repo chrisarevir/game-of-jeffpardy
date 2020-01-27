@@ -1,14 +1,21 @@
 import styled from "styled-components";
 
 const FontColor = {
-  primary: "#f5af6c",
-  success: "#92cc41",
-  warning: "#f7d51d",
+  disabled: "#3236c9",
   error: "#e76e55",
-  disabled: "#3236c9"
+  primary: "#fff",
+  question: "#f5af6c",
+  success: "#92cc41",
+  warning: "#f7d51d"
 } as const;
 
-type TextVariant = "primary" | "success" | "warning" | "error" | "disabled";
+type TextVariant =
+  | "disabled"
+  | "error"
+  | "primary"
+  | "question"
+  | "success"
+  | "warning";
 
 function getFontColor(variant?: TextVariant) {
   if (variant) {
