@@ -504,8 +504,7 @@ const Calendar = ({
             display: "table-cell",
             maxHeight: "500px",
             maxWidth: "700px",
-            overflow: "hidden",
-            padding: "4px"
+            padding: "0 8px 0 4px"
           }}
         >
           <Table bordered dark centered className="clickable-table">
