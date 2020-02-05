@@ -406,14 +406,14 @@ const Calendar = ({
                     </Text>
                     <div style={{ paddingBottom: "1rem" }}>
                       You have{" "}
-                      <Text variant={currentScore < 0 ? "error" : "primary"}>
+                      <Text variant={currentScore < 0 ? "error" : "question"}>
                         {currentScore}
                       </Text>{" "}
                       points.
                     </div>
                     <div style={{ paddingBottom: "2rem" }}>
                       You can wager up to{" "}
-                      <Text variant="primary">{possibleWager}</Text> points.
+                      <Text variant="question">{possibleWager}</Text> points.
                     </div>
                     <TextInput
                       id="final_jeopardy_wager_input"
@@ -444,7 +444,7 @@ const Calendar = ({
                       >
                         {wager !== 0 && (
                           <div style={{ paddingBottom: "1rem" }}>
-                            Your wager: <Text variant="primary">{wager}</Text>
+                            Your wager: <Text variant="question">{wager}</Text>
                           </div>
                         )}
                         <TextInput
