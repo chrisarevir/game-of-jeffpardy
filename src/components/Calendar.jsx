@@ -331,6 +331,14 @@ const Calendar = ({
           [lookupDate]: points
         });
 
+        if (!record.responses) {
+          record.responses = [];
+        }
+
+        record.responses.push({
+          [lookupDate]: responseValueToCompare
+        });
+
         record.total_score += points;
 
         setRecord(record);

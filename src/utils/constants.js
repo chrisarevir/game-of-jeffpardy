@@ -20,6 +20,7 @@ export const defaultRecord = {
 export const defaultPlayerRecord = {
   badges: [],
   months_won: 0,
+  responses: [],
   scores: [],
   total_score: 0,
   user_id: 0,
