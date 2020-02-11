@@ -8,7 +8,6 @@ import {
   getDaysInMonth,
   getMonth,
   getWeeksInMonth,
-  getYear,
   startOfMonth,
   startOfWeek
 } from "date-fns";
@@ -17,9 +16,10 @@ import { range, splitEvery } from "ramda";
 import { setDate } from "date-fns";
 
 import Arrow from "../assets/Arrow.jsx";
+import decrementMonth from "../utils/decrementMonth";
+import incrementMonth from "../utils/incrementMonth";
 
 import { FirebaseContext } from "../components/Firebase";
-
 import Dialog from "../components/Dialog";
 import Icon from "../components/Icon";
 import normalizeDate from "../utils/normalizeDate";
@@ -162,8 +162,6 @@ const Calendar = ({
   const todayMonthKey = getMonth(selectedDate);
   const [viewDate, setViewDate] = React.useState(selectedDate);
   const [currentMonthKey, setCurrentMonthKey] = React.useState(todayMonthKey);
-
-  const currentYear = getYear(new Date());
   const currentMonth = getMonth(new Date());
 
   const handleKeydown = evt => {
@@ -175,38 +173,19 @@ const Calendar = ({
   document.addEventListener("keydown", evt => handleKeydown(evt), false);
 
   const onIncrementMonth = () => {
-    const updatedMonthKey = currentMonthKey + 1;
+    const nextMonth = incrementMonth(viewDate);
 
-    if (updatedMonthKey > currentMonth) {
-      return;
-    }
-
-    setCurrentMonthKey(updatedMonthKey);
-
-    const updatedViewDate = new Date(currentYear, updatedMonthKey);
-    setViewDate(updatedViewDate);
-
-    const monthName = format(updatedViewDate, "MMMM");
-    setMonthTitle(monthName);
+    setCurrentMonthKey(getMonth(nextMonth));
+    setViewDate(nextMonth);
+    setMonthTitle(format(nextMonth, "MMMM"));
   };
 
   const onDecrementMonth = () => {
-    if (currentMonthKey === 0) {
-      return;
-    }
+    const previousMonth = decrementMonth(viewDate);
 
-    const updatedMonthKey = currentMonthKey - 1;
-    setCurrentMonthKey(updatedMonthKey);
-
-    const updatedViewDate =
-      currentMonth === updatedMonthKey
-        ? new Date()
-        : new Date(currentYear, updatedMonthKey);
-
-    setViewDate(updatedViewDate);
-
-    const monthName = format(updatedViewDate, "MMMM");
-    setMonthTitle(monthName);
+    setCurrentMonthKey(getMonth(previousMonth));
+    setViewDate(previousMonth);
+    setMonthTitle(format(previousMonth, "MMMM"));
   };
 
   const onDayClick = (e, firebase) => {
