@@ -13,7 +13,6 @@ import SignIn from "./pages/SignIn";
 import Account from "./pages/Account";
 import Admin from "./pages/Admin";
 import PasswordForget from "./pages/PasswordForget";
-// import SignOutButton from "./components/SignOutButton";
 import { FirebaseContext } from "./components/Firebase";
 
 const App = () => {
