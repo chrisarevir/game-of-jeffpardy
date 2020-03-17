@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "https://chrisarevir.github.io/game-of-jeffpardy",
   "dependencies": {
-    "@types/jest": "25.1.2",
+    "@types/jest": "25.1.4",
     "@types/node": "12.12.27",
     "@types/react": "16.9.23",
     "@types/react-dom": "16.9.5",
