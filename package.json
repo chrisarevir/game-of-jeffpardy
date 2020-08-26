@@ -12,7 +12,7 @@
     "date-fns": "2.13.0",
     "firebase": "7.14.2",
     "nes-react": "1.0.2",
-    "ramda": "0.27.0",
+    "ramda": "0.27.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-router-dom": "5.1.2",
@@ -44,7 +44,7 @@
     ]
   },
   "devDependencies": {
-    "@types/ramda": "0.27.4",
+    "@types/ramda": "0.27.14",
     "@types/react-router-dom": "5.1.5",
     "@types/styled-components": "5.1.0",
     "gh-pages": "2.2.0"
