@@ -17,7 +17,7 @@
     "react-dom": "16.13.1",
     "react-router-dom": "5.1.2",
     "react-scripts": "3.4.1",
-    "styled-components": "5.1.0",
+    "styled-components": "5.1.1",
     "typescript": "3.8.3"
   },
   "scripts": {
@@ -46,7 +46,7 @@
   "devDependencies": {
     "@types/ramda": "0.27.4",
     "@types/react-router-dom": "5.1.5",
-    "@types/styled-components": "5.1.0",
+    "@types/styled-components": "5.1.2",
     "gh-pages": "2.2.0"
   }
 }
